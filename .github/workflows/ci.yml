@@ -53,14 +53,8 @@ jobs:
     - name: "⚙️ Teste 1 - Verificação do Binário e Versão"
       run: ultron versao
 
-    - name: "⏱️ Teste 2 - Roda do Tempo e Scheduler MPSC"
-      run: ultron executar tests/pt/testar_tempo.ult
-
-    - name: "📁 Teste 3 - File System Nativo (Syscalls OS)"
-      run: ultron executar tests/pt/os_test.ult
-
-    - name: "🌐 Teste 4 - The Ultimate Network & I/O Engine (JSON/HTTP/File)"
-      run: ultron executar tests/pt/request.ult
+    - name: "🚀 Teste 2 - Suíte Master de Módulos (Main Runner)"
+      run: ultron executar tests/main.ult
 
     - name: "🧹 [Linux/macOS] Desinstalação Limpa"
       if: runner.os != 'Windows'
