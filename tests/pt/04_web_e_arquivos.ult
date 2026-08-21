@@ -1,0 +1,8 @@
+imprimir("🧪 [4/13] (PT-BR) File I/O e Rotas de Servidor Web...")
+escrever_arquivo("teste_pt.txt", "Segredo do Ultron")
+arq_lido_pt = ler_arquivo("teste_pt.txt")
+funcao rota_api_pt(body):
+    retornar "{\"status\": \"ok\"}"
+servidor_rota_api("/api/pt", rota_api_pt)
+se arq_lido_pt = "Segredo do Ultron":
+    imprimir("   ✔️ Leitura/Escrita e Registro Web OK!")

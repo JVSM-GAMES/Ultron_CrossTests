@@ -1,0 +1,30 @@
+pasta_pai = "minha_pasta_mestra"
+pasta_filha = "minha_pasta_mestra/subpasta"
+arquivo_teste = "minha_pasta_mestra/subpasta/dados.txt"
+
+# 1. Criação e Checagem 
+afirmar(criar_diretorio(pasta_pai) == verdadeiro)
+afirmar(criar_diretorio(pasta_filha) == verdadeiro)
+
+# 2. Escrita Segura (fflush c-level)
+sucesso_escrita = escrever_arquivo(arquivo_teste, "Conteudo Seguro Bare-Metal!")
+afirmar(sucesso_escrita == verdadeiro)
+
+# 3. Verificação de Existência (Sem Crash!)
+afirmar(arquivo_existe(arquivo_teste) == verdadeiro)
+afirmar(arquivo_existe("arquivo_fantasma.txt") == falso)
+
+# 4. Listagem de Diretórios (O Retorno O(1) de Arrays)
+arquivos = listar_diretorio(pasta_filha)
+afirmar(tamanho(arquivos) == 1)
+afirmar(arquivos[0] == "dados.txt")
+
+# 5. O DESTRUIDOR RECURSIVO (Opcional e Protegido)
+# Tentar apagar a pasta pai sem recursividade DEVE falhar, pois ela tem conteúdo!
+falhou = remover_diretorio(pasta_pai) 
+afirmar(falhou == falso)
+
+# Usando o segundo argumento mágico! O compilador resolve o overload macro.
+destruiu = remover_diretorio(pasta_pai, verdadeiro)
+afirmar(destruiu == verdadeiro)
+afirmar(arquivo_existe(pasta_pai) == falso)

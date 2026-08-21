@@ -1,0 +1,9 @@
+imprimir("🧪 [3/13] (PT-BR) SQLite Nativo, Strings e JSON...")
+db_conectar("memoria_pt.db")
+db_executar("CREATE TABLE IF NOT EXISTS dados (chave TEXT);")
+db_executar("INSERT INTO dados VALUES ('MotorUltron');")
+texto_db_pt = db_consultar("SELECT chave FROM dados LIMIT 1;", "chave")
+js_obj_pt = "{}"
+js_obj_pt = json_setar_texto(js_obj_pt, "sistema", maiusculo(texto_db_pt))
+se json_obter_texto(js_obj_pt, "sistema") = "MOTORULTRON":
+    imprimir("   ✔️ Banco de Dados, Manipulação de String e JSON OK!")

@@ -1,0 +1,33 @@
+// Tipagem Fluida: Arrays, Dicionários e JSON na veia!!! :D
+dados = { 
+    "nome": "João", 
+    "setup": "Ubuntu", 
+    "matrizes": [ [10, 20], [30, 40] ] 
+}
+
+// Duck-Typing convertido em C-ABI Pointers em tempo real
+dados["matrizes"][0].append(50) 
+dados["ativo"] = verdadeiro
+
+// Serialização síncrona nativa sem bibliotecas externas lentas!
+imprimir(dados)
+saida_json = json.dumps(dados)
+imprimir(saida_json)
+imprimir(f"Serialização automática em F-Strings: {dados}")
+
+// Definido em um escopo diferente do "let int memoria_limite" e portanto não alterada.
+int memoria_limite = 9999990777
+status = 0
+imprimir(f"Payload pronto! Memória: {memoria_limite}, Status: {status}")
+se tamanho(saida_json) > 15:
+    // Variáveis "int" e "string" bypassam o sistema dinâmico e vão pro Metal!
+    // Variáveis "let" não sobrescrevem o valor e nem tipagem de uma variavél de fora.
+    let int memoria_limite = 9999
+    status = "Cache O(1)"
+    imprimir(f"Payload pronto! Memória: {memoria_limite}, Status: {status}")
+    // F-Strings convertidas nativamente e resolvidas na AST
+    afirmar(status = "Cache O(1)")
+    afirmar(memoria_limite = 9999)
+imprimir(f"Payload pronto! Memória: {memoria_limite}, Status: {status}")
+afirmar(status = "Cache O(1)")
+afirmar(memoria_limite = 9999990777)

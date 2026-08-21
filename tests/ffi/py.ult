@@ -1,0 +1,101 @@
+importar_py numpy como np
+importar_py matplotlib.pyplot como plt
+importar_py json como py_json
+
+imprimir("==== THE ULTRON INTEROP PIPELINE: PY <-> C11 ====")
+
+// 1. DADOS ULTRON ENVIADOS PARA PYTHON
+// Definimos as constantes brutas que controlarão a Virtual Machine Python
+let int pontos_grafico = 300
+let float ruido_intensidade = 0.5
+
+imprimir(f"[{pontos_grafico} pontos de Sinal] -> Passando para o backend Python (Numpy)...")
+
+// Embutimos um Script Py que herda as variáveis via a genialidade F-String O(1)
+embutir_py(f"
+import numpy as np
+import json
+
+# Python lê e opera a carga matemática requisitada pelo Ultron
+x = np.linspace(0, 15, {pontos_grafico})
+ruido = np.random.normal(0, {ruido_intensidade}, {pontos_grafico})
+
+# Onda senoidal com interferência bruta
+sinal_poluido = np.sin(x) + ruido
+
+# Salva globalmente na RAM Py (Python Space) 
+lista_poluida_py = sinal_poluido.tolist()
+")
+
+// 2. PYTHON DEVOLVE "OBJETOS/MATRIZ" AO ULTRON
+// O Ultron Extrai o Array nativamente, importando para dentro do Array Dinâmico The Matrix!
+let pacote_json = avaliar_py("json.dumps(lista_poluida_py)")
+let array_sinal = json.loads(pacote_json)
+
+imprimir(f"Ultron recebeu Array Python contendo {len(array_sinal)} pontos.")
+imprimir("Varrendo dados em Loops O(1) Nativos de C e aplicando Classes...")
+
+// 3. ULTRON ATIVA FUNÇÕES/CLASSES PARA CALCULAR (A O(1) ENGINE NATIVA)
+classe ProcessadorSinal {
+    let nome = "Filtro O(1)"
+    let limiar_alerta = 0.0
+}
+
+let maquina = novo ProcessadorSinal()
+let sinal_filtrado = []
+let float pico_maximo = -9999.0
+
+// Iteração Ultron Array O(1) (Milissegundos!)
+para (ponto em array_sinal) {
+    let valor_limpo = ponto
+    
+    // Aplicando Regra de Supressão: Metade dos danos em pontos de ruído extremo!
+    se (ponto < 0.0) {
+        valor_limpo = ponto * 0.5
+    }
+    
+    // Guardamos na Classe Ultron quem for o maior!
+    se (valor_limpo > pico_maximo) {
+        pico_maximo = valor_limpo
+    }
+    
+    // Invocação Duck Typing de Método de Objeto Nativo do Compilador:
+    sinal_filtrado.append(valor_limpo)
+}
+
+// Cálculo final Ultron
+maquina.limiar_alerta = pico_maximo * 0.80
+
+imprimir(f"Processamento Ultron Finalizado! Pico Máximo Lido: {pico_maximo}")
+imprimir(f"Alerta Dinâmico calculado pelo Ultron na linha de: {maquina.limiar_alerta}")
+
+// 4. ULTRON DEVOLVE VALOR FINAL PRO PYTHON FINALIZAR (PLOTAR O PNG)
+// Fechamos o Loop de empacotar
+let matriz_processada_json = json.dumps(sinal_filtrado)
+
+imprimir("Enviando resultados processados em C para Matplotlib Renderizar a Imagem...")
+
+embutir_py(f"
+import matplotlib.pyplot as plt
+import json
+
+# Python importa as conclusões extraídas pelo Ultron Array
+y_filtrado = json.loads('{matriz_processada_json}')
+limiar = {maquina.limiar_alerta}
+
+# Gráfico
+plt.figure(figsize=(10, 5))
+plt.plot(lista_poluida_py, color='lightgray', label='1. Entrada Ruidosa (Feita no Python)')
+plt.plot(y_filtrado, color='red', linewidth=2, label='2. Processado e Filtrado pelo Ultron C11')
+
+# A linha de Corte Calculada pelo Ultron Puxada para o Render!
+plt.axhline(y=limiar, color='orange', linestyle='--', label=f'Threshold Ultron (Max * 0.8)')
+
+plt.title('Ultron + Python: Symbiosis Real')
+plt.legend()
+
+# Ordem para que o Python materialise o produto!
+plt.savefig('interop_ultron.png', dpi=300)
+")
+
+imprimir("✅ Missão Cumprida! O arquivo visual 'interop_ultron.png' brotou na sua pasta de execução!")

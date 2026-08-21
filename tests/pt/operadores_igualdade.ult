@@ -1,0 +1,80 @@
+// =====================================================================
+// A LEI DOS OPERADORES DE IGUALDADE EM ULTRON AOT
+// =====================================================================
+// Ultron é a primeira linguagem compilada AOT de Metal (C11) a mesclar o 
+// dinamismo flexível com o preciosismo atômico de uma Máquina Computacional.
+// Esse arquivo é silencioso: ele valida o núcleo com 100% de invisibilidade,
+// a menos que as premissas Matemáticas Universais do compilador falhem.
+// =====================================================================
+
+
+// ---------------------------------------------------------------------
+// 1. NÍVEL 1: O(1) MATCH DINÂMICO CONTEXTUAL (= e !=)
+// ---------------------------------------------------------------------
+// Em linguagens como C ou JS puro, o "Float Loss" vaza frações ocultas na FPU
+// (Placa-Mãe) e corrompe condicionais lógicas simples.
+// Em Ultron, O Nível 1 usa Matching Preditivo por Fração. A Máquina C formata,
+// remove os detritos do IEEE-754 e aceita bases exatas. 
+// Perfeito para scripts soltos e checagens matemáticas do dia a dia.
+// ---------------------------------------------------------------------
+
+// Python e Javascript não perdoariam. O Ultron sabe que você busca o número limpo!
+afirmar(0.1 + 0.2 = 0.3)
+
+// The Precision Matcher: O lado esquerdo cobre o escopo do direito perfeitamente.
+afirmar(0.3145 = 0.31) 
+afirmar(0.3145 != 0.315) // "0.315" não é base matemática para o esquerdo. Falha de exatidão!
+
+// A coerência numérica tradicional de inteiros atua normalmente:
+afirmar(15 != 1)
+afirmar(1.5 = 1.5)
+
+
+// ---------------------------------------------------------------------
+// 2. NÍVEL 2: MATEMÁTICA CLÁSSICA COM COERÇÃO - C-METAL IEEE-754 (== e !==)
+// ---------------------------------------------------------------------
+// Retira o perdão interpretativo dos prefixos. Age exatamente como o "==" do 
+// JavaScript: converte (Casting) Textos e Variáveis Fluídas para 
+// Decimais Puros sob o capô, e delega para a Matemática rigorosa da CPU.
+// ---------------------------------------------------------------------
+
+// Na CPU pura, 0.1+0.2 vaza bytes e resulta em 0.3000...004! Sendo clássica, ela recusa a igualdade:
+afirmar(0.1 + 0.2 !== 0.3) 
+
+// A régua inteira conta os limites decimais invisíveis de C:
+afirmar(0.3145 !== 0.31)   
+
+// Magia de Coerção de Tipos Limpa (O Parser transforma a String O(1) pra int C):
+int_classico = 13
+txt_coercivo = "13"
+
+afirmar(int_classico == txt_coercivo)
+afirmar(2 + 2 == 4)
+afirmar(8.2 !== 9.2)
+
+
+// ---------------------------------------------------------------------
+// 3. NÍVEL 3: ESTRITEZA ABSOLUTA DE MEMÓRIA (=== e !===)
+// ---------------------------------------------------------------------
+// Destroça conversores C em busca de performance! Esse escudo examina a "U_BOX" 
+// na memória e sua The Static Typage. Se as pontas RAM apontam tipos distintos, 
+// ele nem se dá ao luxo de tentar igualar a matemática. Corta e Falsifica na hora.
+// ---------------------------------------------------------------------
+
+// Testando O(1) Anti-Collision:
+num_seis = 6
+float_seis = 6.0
+string_seis = "6"
+
+// Usar "==" converte em background e valida. 
+// Mas com The Strict (=== / !===), 6 ("Number") é cortado imediatamente frente a "6" ("String").
+afirmar(num_seis !=== string_seis)
+
+// Num e Float sobem pro PNUMA como Double Native sob C11
+afirmar(num_seis === float_seis)
+
+val_dinamico = 90
+val_identico = 90
+
+// Total e estritamente iguais nas raízes (Pointers do mesmo Tipo + Valor Físico exato):
+afirmar(val_dinamico === val_identico)

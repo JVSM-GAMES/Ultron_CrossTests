@@ -1,0 +1,54 @@
+importar_py math.pi como the_pi
+importar_py os.cpu_count como cores_da_maquina
+importar_py time como tempo
+
+// Estes importes dizem ao Ultron: Baixe e vincule na RAM C11
+importar_py numpy como np
+importar_py matplotlib.pyplot como plt
+
+// DECLARAÇÕES METÁLICAS O(1). Tipagem Rígida garante Memória Desempacotada C!
+let int hp = 1000
+int forca = 12
+
+imprimir("==== TESTE SUPREMO ULTRON V1.0 (Com Matplotlib e Strict C-Types) ====")
+
+imprimir(f"O Chefe nasceu com INT {hp} de Vida Rígida no GCC!")
+
+// THE UNIVERSAL FFI ENGINE! O Ultron lê as Bridges Dinamicamente sem Arrays Tuplados C.
+a = tempo.time()
+imprimir(f"O Tempo Corrente extraído via StdLib Python é: {a}")
+imprimir(f"Calculando a gravidade em Math FFI: {the_pi()}")
+
+// Arrays Nativos DOD:
+armas = ["Laser", "Missil", "Plasma"]
+armas.append("Antimatéria")
+
+imprimir("Varrendo matriz O(1) do DOD de Compilação:")
+para (arma em armas) {
+    imprimir(f"-> Ativando Canhão de {arma}")
+}
+
+imprimir("--> Renderizando Sinal Senoidal Numpy direto em PNG! <--")
+
+// O METAL ESCAPING EM AÇÃO!
+// Abraçamos a Python Virtual Machine Inteiramente. É código Python Real agora!
+embutir_py("
+import numpy as np
+import matplotlib.pyplot as plt
+
+# A VM Python nativa consome processamento O(N) e salva o Buffer
+x = np.linspace(0, 10, 1000)
+y = np.sin(x)
+z = 10
+
+plt.figure()
+plt.plot(x, y, label='Sinal Senoidal', color='blue')
+plt.title('Gráfico Gerado pelo Interpretador Embutido Ultron!')
+plt.savefig('grafico_senoidal.png')
+")
+
+let xx = avaliar_py("json.dumps(z)")
+let x = json.loads(xx)
+imprimir(x)
+
+imprimir("Grafico Plotado! Ultron V1 e FFI Data Science unificados na Mesma Memória.")

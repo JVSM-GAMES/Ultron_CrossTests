@@ -1,0 +1,16 @@
+imprimir("🧪 [2/13] (PT-BR) Classes, Objetos, Switch e While...")
+classe Nave_BR:
+    energia = 100
+
+minha_nave_br = novo_Nave_BR()
+minha_nave_br.energia = 50
+cont_pt = 0
+enquanto cont_pt < 2 { cont_pt = cont_pt + 1 }
+
+escolha cont_pt {
+    caso 2:
+        se minha_nave_br.energia = 50:
+            imprimir("   ✔️ OOP e Estruturas de Controle OK!")
+    padrao:
+        jogar "Falha no switch/case!"
+}

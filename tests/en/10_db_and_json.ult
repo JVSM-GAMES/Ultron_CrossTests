@@ -1,0 +1,9 @@
+imprimir("🧪 [10/13] (EN-US) SQLite, Strings and JSON...")
+db_conectar("memoria_en.db")
+db_executar("CREATE TABLE IF NOT EXISTS data (key TEXT);")
+db_executar("INSERT INTO data VALUES ('UltronEngine');")
+db_text_en = db_consultar("SELECT key FROM data LIMIT 1;", "key")
+js_data_en = "{}"
+js_data_en = json_setar_texto(js_data_en, "system", minusculo(db_text_en))
+if json_obter_texto(js_data_en, "system") = "ultronengine":
+    imprimir("   ✔️ English DB, String manipulation and JSON OK!")

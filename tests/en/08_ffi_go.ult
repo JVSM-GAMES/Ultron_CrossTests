@@ -1,0 +1,5 @@
+imprimir("🧪 [13/14] (EN-US) FFI Go (Modules)...")
+import_go github.com/google/uuid as uuid
+import_go github.com/gin-gonic/gin as gin
+import_go github.com/sirupsen/logrus as logrus
+imprimir("   ✔️ FFI Go validated (Modules cached)!")

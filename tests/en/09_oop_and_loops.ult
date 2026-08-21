@@ -1,0 +1,16 @@
+imprimir("🧪 [9/13] (EN-US) Classes, Objects, Switch and While...")
+class Ship_EN:
+    energy = 100
+
+my_ship_en = new_Ship_EN()
+my_ship_en.energy = 50
+count_en = 0
+while count_en < 2:
+    count_en = count_en + 1
+
+switch count_en:
+    case 2:
+        if my_ship_en.energy = 50:
+            imprimir("   ✔️ English OOP and Loops OK!")
+    default:
+        throw "Switch/Case Failed!"

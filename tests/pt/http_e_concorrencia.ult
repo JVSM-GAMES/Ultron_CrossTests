@@ -1,0 +1,56 @@
+# =========================================================================
+# 👑 PROVA DE MPSC O(1) & REDES NATIVAS KERNEL
+# =========================================================================
+
+funcao banco_ficticio_mock(req_recebida):
+    atrasar(100) # Simula esforço
+    retornar "{ \"mensagem\": \"Operacao processada por Ator!\" }"
+
+asyncc = false
+funcao banco_ficticio_lento_mock(req_recebida):
+    atrasar(3000) # Simula esforço
+    print("[PASS] Fui Executado Idependentemente do Andamento do Script!")
+    asyncc = true
+
+funcao startar_api_backend(vazio):
+    servidor_rota_api("/api/teste", banco_ficticio_mock)
+    servidor_rota_api("/api/teste/lento", banco_ficticio_lento_mock)
+    # Lançando Escuta Em Sub-Processo (Thread de Worker Dedicado Epoll)
+    servidor_ouvir("127.0.0.1", 9005)
+
+funcao colisor_instavel(vazio):
+    atrasar(250)
+    forcar_crash()
+
+imprimir("🌟 Iniciando Validações Extremas (Let It Crash, Background MPSC & TCP)...")
+
+# 1. Ligando um Backend Completo na Porta 9005 de Forma Totalmente Isolada 
+# => Como usamos "segura: true", uma thread com SetJMP Blindada O(1) levanta 
+#    ele sem tocar no script main e o processador distribui nos Workers em Ring.
+imprimir("[PASS] Bootando Reactor de Rede em Task.")
+tarefa(startar_api_backend, "START").avancado("{ \"segura\": \"true\", \"stack\": 65000 }")
+atrasar(1000) # Segundos pra maquina acoplar O Port Bind do TCP Kernel
+
+# 2. Fire And Forget em Extremo Tráfego C++ Asíncrono Nativo
+imprimir("[PASS] Enviando POST Fire&Forget Isoladamente e Fechando Lógica M:N...")
+solicitar("http://127.0.0.1:9005/api/teste/lento").avancado("{ \"method\": \"POST\", \"async\": \"true\", \"segura\": \"false\" }")
+
+# 3. Exaustando Teste Dinamico De Isolamento Nativo e Supervisor Falso OTP 
+imprimir("[PASS] Subindo Kamikazes. Se eu cair de RAM NULA o servidor vai aguentar!")
+tarefa(colisor_instavel, "1").avancado("{ \"segura\": \"true\" }")
+tarefa(colisor_instavel, "2").avancado("{ \"segura\": \"true\", \"stack\": 8192 }")
+
+# Esperando a explosão! (Zero Drop nas threads dos Reactores I/O!)
+atrasar(500)
+
+# 4. Teste Síncrono Awaiting I/O Non-Blocking do Próprio Compilador!
+imprimir("[PASS] HTTP Nativo Ativando POST e Payload!")
+
+teste_c = solicitar("http://127.0.0.1:9005/api/teste").avancado("{ \"method\": \"GET\", \"body\": \"PAYLOAD_STRING_ULTRON\" }")
+atrasar(200)
+print(teste_c)
+afirmar(teste_c = "{ \"mensagem\": \"Operacao processada por Ator!\" }")
+
+imprimir("⚡ SUCESSO AOT VERIFICADO EM MÁXIMO GRAU!")
+atrasar(7000)
+afirmar(asyncc = true)

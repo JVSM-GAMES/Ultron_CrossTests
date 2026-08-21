@@ -1,0 +1,17 @@
+imprimir("🧪 [15/15] (EN-US) Syntax Freedom (Hybrid JS/Python)...")
+
+// 1. One-liner JS style
+fn quick_math(x) { return x * 2; }
+
+if quick_math(10) = 20 {
+    imprimir("   ✔️ One-liner JS-like syntax works flawlessly!")
+} else {
+    throw "Failed JS-like syntax!"
+}
+
+// 2. Pure Python style
+fn python_math(x):
+    return x * 3
+
+if python_math(10) = 30:
+    imprimir("   ✔️ Pure Python-like syntax works flawlessly!")

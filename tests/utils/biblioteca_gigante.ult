@@ -1,0 +1,3 @@
+funcao funcao_nunca_chamada() {
+    imprimir("Isso não deve entrar no binário final!")
+}

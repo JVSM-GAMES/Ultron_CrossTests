@@ -1,0 +1,61 @@
+importar_py math.pi como the_pi
+importar_py os.cpu_count como cores_da_maquina
+importar_py time como tempo
+importar_py numpy como np
+importar_py xy.pyplot como plt
+
+a = tempo.time()
+imprimir(a)
+
+imprimir("==== TESTE ABSOLUTO ULTRON V1.0 ====")
+
+// Extraído nativamente pelo O(1) Universal FFI da Python StdLib Embeddada!
+imprimir(f"Núcleos liberados pela Nuvem Python FFI: {cores_da_maquina()}")
+imprimir(f"Calculando a gravidade em Math FFI: {the_pi()}")
+
+classe Inimigo {
+    let nome = "Borg"
+    let hp = 1000
+}
+
+chefe = novo_Inimigo()
+
+// Arrays e Dicts 
+armas = ["Laser", "Missil", "Plasma"]
+armas.append("Antimatéria")
+
+imprimir("Varrendo matriz O(1) do DOD de Compilação:")
+para (arma em armas) {
+    imprimir(f"-> Ativando Canhão de {arma}")
+}
+
+// O METAL ESCAPING EM AÇÃO! Injeta C Puro para quebrar as barreiras de Abstração:
+embutir_c("printf(\"\n🛡️ Escotilha Aberta! C11 Nativo injetado em GCC via Ultron! \\n\");")
+embutir_c("for(int k=0; k < 3; k++) printf(\"Hackeando hardware camada L1 [%d]...\\n\", k);")
+embutir_c("printf(\"\\n\");")
+
+tentar {
+    // Divisão Impossível O(1) -> Crash Seguro do SO
+    a = 10 / 0
+} capturar(err) {
+    imprimir(f"O Fogo Cruzado da RAM colapsou... Erro Isolado com sucesso: {err}")
+}
+
+imprimir("Fim de execução inatingível. Ultron 1.0 Operante!")
+
+
+# Gerando dados fictícios
+x = np.linspace([0, 10, 1000])
+y = np.sin(x)
+
+# Criando o gráfico com comandos tradicionais do pyplot
+plt.figure()
+plt.plot(x, y, label="Sinal Senoidal", color="blue")
+plt.title("Exemplo Prático com a Biblioteca XY")
+plt.xlabel("Eixo X")
+plt.ylabel("Eixo Y")
+plt.legend()
+
+# Exporta diretamente para um arquivo HTML interativo com WebGL2
+plt.savefig("meu_grafico.html") 
+plt.show()

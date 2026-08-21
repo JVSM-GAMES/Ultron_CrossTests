@@ -1,0 +1,13 @@
+resultado_sintaxe = 0
+funcao pt_testar_sintaxe() {se 10 = 10 { resultado_sintaxe = 200 } senao { resultado_sintaxe = 500 }}
+pt_testar_sintaxe()
+// Transmissão variável pra variável
+# Okok
+/**
+Oi
+Olaaaaaa
+Oi
+**/
+mutacao_valor = resultado_sintaxe
+se mutacao_valor = 200:
+    //imprimir("   ✔️ Sintaxe e Mutações OK!")

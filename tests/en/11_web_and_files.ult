@@ -1,0 +1,8 @@
+imprimir("🧪 [11/13] (EN-US) File I/O and Web Routes...")
+escrever_arquivo("test_en.txt", "Ultron Secret")
+read_content_en = ler_arquivo("test_en.txt")
+fn rota_api_en(body):
+    return "{\"status\": \"ok\"}"
+servidor_rota_api("/api/en", rota_api_en)
+if read_content_en = "Ultron Secret":
+    imprimir("   ✔️ English File I/O and Server Routes OK!")

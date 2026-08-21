@@ -1,0 +1,34 @@
+from slugify import_py slugify
+importar_js { nanoid } from 'nanoid';
+use regex::Regex;
+import_go github.com/google/uuid as uuid
+import_go github.com/tidwall/gjson as gjson
+
+
+
+
+/*
+from slugify import slugify
+
+# Chamada
+resultado = slugify("Olá Mundo! Como vai a FFI?", separator="_")
+
+import { nanoid } from 'nanoid';
+
+// Chamada
+const id = nanoid(10);
+
+use regex::Regex;
+
+// Instanciação e Chamada
+let re = Regex::new(r"^\d{4}-\d{2}-\d{2}$").unwrap();
+let valido = re.is_match("2026-08-21");
+
+package main
+import "github.com/tidwall/gjson"
+
+// Chamada
+json := `{"usuario": {"nome": "Ada", "idade": 30}}`
+resultado := gjson.Get(json, "usuario.nome")
+valorString := resultado.String()
+*/

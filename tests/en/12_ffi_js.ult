@@ -1,0 +1,6 @@
+imprimir("🧪 [12/13] (EN-US) FFI JavaScript (Node & NPM)...")
+import_js lodash as _
+cmd_js = "node -e \"const _ = require('./.Ultron/deps/js/node_modules/lodash'); console.log('NODE_FFI_OK');\""
+js_output = cmd(cmd_js)
+if tamanho(js_output) > 5:
+    imprimir("   ✔️ Node/NPM Interoperability OK!")

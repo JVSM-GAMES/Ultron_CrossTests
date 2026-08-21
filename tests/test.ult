@@ -1,0 +1,92 @@
+vida = 100
+let forca = (5 + 10) * 2
+dano = 8001
+
+se (vida > 10) {
+    let dano = vida - forca
+    imprimir("Ola, Ultron v1.0. Seu dano foi: ")
+    imprimir(dano)
+}
+imprimir(dano)
+
+lista = [100, 200, 300]
+lista.append(400)
+lista[1] = 50
+
+jogador = { "nome": "Iron Man", "energia": 80 }
+jogador["nome"] = "Guts"
+
+imprimir("Item da lista:")
+imprimir(lista[1])
+imprimir("Nome Jogador:")
+imprimir(jogador["nome"])
+
+// ==========================================
+// 1. CLASSES E DECLARAÇÕES ESTABELECIDAS
+// ==========================================
+classe Entidade {
+    let nome = "Desconhecido"
+    let vida = 100
+}
+
+// ==========================================
+// 2. FUNÇÕES HÍBRIDAS E MATEMÁTICA PURA O(1)
+// ==========================================
+funcao calcular_dano(base, multiplicador) {
+    // Usando expoente (**) e Matemática Segura C11
+    let resultado = (base ** 2) + (multiplicador * 5)
+    retornar resultado
+}
+
+// ==========================================
+// 3. INSTANCIAÇÃO E MANIPULAÇÃO ORIENTADA A OBJETO
+// ==========================================
+chefe = novo_Entidade()
+chefe.nome = "Ultron Supremo"
+chefe.vida = 500
+
+imprimir(f"Alerta: O chefe {chefe.nome} surgiu com {chefe.vida} de HP!")
+
+// ==========================================
+// 4. MATRIZES E DICIONÁRIOS DINÂMICOS
+// ==========================================
+// Lista com inserção via Orientação a Objetos Híbrida (.append)
+inventario = ["Espada Espartana", "Escudo de Adamantium"]
+inventario.append("Poção de Cura Maxima")
+
+imprimir("Último item recebido no inventário:")
+imprimir(inventario[2])
+
+// Dicionário Hashing em O(1) Memory Layout
+status_heroi = { "mana": 100, "defesa": 40 }
+status_heroi["defesa"] = 85
+
+// ==========================================
+// 5. THE PNUMA SHIELD: TRY/CATCH DE HARDWARE
+// ==========================================
+tentar {
+    imprimir("Preparando para calcular ataque critico...")
+    
+    // Matemática pura via F-String! 
+    dano_total = calcular_dano(10, 3)
+    imprimir(f"O golpe desferiu {dano_total} de dano massivo!")
+    
+    nova_vida = chefe.vida - dano_total
+    chefe.vida = nova_vida
+    
+    se (chefe.vida > 0) {
+        imprimir(f"O chefe sobreviveu. Vida restante: {chefe.vida}")
+    } senao {
+        imprimir("O chefe foi destruido. Vitoria!")
+    }
+
+    // Provocando um crash proposital dividindo por zero (se fosse C puro fechava o programa)
+    // falha_fatal = 10 / 0
+    
+} capturar (erro_cpu) {
+    // Escudo acionado! O Erro de Kernel vira uma String tratável
+    imprimir(f"A Nuvem interveio. Ocorreu um erro letal no Motor: {erro_cpu}")
+}
+
+// O código contínua livremente por baixo do Try/Catch sem Memory Leaks!
+imprimir("Execução Finalizada pela The Ultron V1.0 Engine.")

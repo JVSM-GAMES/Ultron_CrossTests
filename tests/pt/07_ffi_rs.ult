@@ -1,0 +1,5 @@
+imprimir("🧪 [12/14] (PT-BR) FFI Rust (Crates)...")
+importar_rs base64 como b64
+importar_rs regex como re
+importar_rs serde_json como serde
+imprimir("   ✔️ FFI Rust validado (Crates salvas no Cache)!")

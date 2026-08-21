@@ -1,0 +1,6 @@
+imprimir("🧪 [5/13] (PT-BR) FFI Python (Imports Específicos)...")
+de colorama importar_py init como inicio
+cmd_py = "python3 -c \"import sys; sys.path.append('.Ultron/deps/py'); from colorama import init; print('PYTHON_FFI_OK')\""
+saida_py = cmd(cmd_py)
+se tamanho(saida_py) > 5:
+    imprimir("   ✔️ Interoperabilidade PIP/Python c/ 'de importar' OK!")

@@ -1,0 +1,39 @@
+metricas_matematicas = {
+    "soma": 5 + 2,                
+    "subtracao": 5 - 2,                        
+    "multiplicacao": 7 * 3,                    
+    "divisao_real": 5 / 2,                     
+    "divisao_inteira": 5 // 2,                 
+    "sobra": 5 % 2,
+    "potencia": 5 ** 2,                        
+    "raiz_quadrada": math.sqrt(25),             
+    "arredondamento_cima": math.ceil(5.2),                  
+    "arredondamento_baixo": math.floor(5.8)                
+}
+
+afirmar(metricas_matematicas["soma"] == 7)
+afirmar(metricas_matematicas["subtracao"] == 3)
+afirmar(metricas_matematicas["multiplicacao"] == 21)
+afirmar(metricas_matematicas["divisao_real"] == 2.5)
+afirmar(metricas_matematicas["divisao_inteira"] == 2)
+afirmar(metricas_matematicas["sobra"] == 1)
+afirmar(metricas_matematicas["potencia"] == 25)
+afirmar(metricas_matematicas["raiz_quadrada"] == 5)
+afirmar(metricas_matematicas["arredondamento_cima"] == 6)
+afirmar(metricas_matematicas["arredondamento_baixo"] == 5)
+
+conta = 7 + 3 * 7 / 3; sobra = 27 % 3; conta_louca = 5 * 3.14 + 5 * 87 / 25 - 5 + 35 * 9
+afirmar(conta_louca == 343.1)
+afirmar(conta == 14)
+afirmar(sobra == 0)
+
+conta_composta = 2 * 6 / (3 ** 9 - (98 % 4))
+afirmar(conta_composta = 0.000609725115593)
+afirmar(conta_composta != 0.0006097251155930)
+afirmar(conta_composta != 0.0006097251155938)
+afirmar(conta_composta == 0.0006097251155937198)
+afirmar(conta_composta != 0.0006097251155937197)
+afirmar(conta_composta != 0.0006097251155937199)
+afirmar(0.1 + 0.2 = 0.3)
+afirmar(0.1 + 0.2 == 0.30000000000000004)
+afirmar(0.1 + 0.2 != 0.30000000000000001)

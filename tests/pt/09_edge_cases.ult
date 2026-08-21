@@ -1,0 +1,22 @@
+imprimir("🧪 [14/14] (PT-BR) Edge Cases: Expressões, Mutações e Variáveis...")
+
+// Testando matemática 
+calc_aninhado = 5 * 2
+calc_final = calc_aninhado + 10
+
+// Testando atribuição variável -> variável
+transfere_calc = calc_final
+
+funcao rota_teste_vazia():
+    retornar "Vazio"
+    
+// Testando concatenação mista dinâmica
+str_aninhada = "String " + rota_teste_vazia()
+
+se transfere_calc = 20:
+    se str_aninhada = "String Vazio":
+        imprimir("   ✔️ Edge cases matemáticos, transferências e strings OK!")
+    senao:
+        jogar "Falha no edge case de concatenação dinâmica."
+senao:
+    jogar "Falha no edge case de matemática e atribuição."

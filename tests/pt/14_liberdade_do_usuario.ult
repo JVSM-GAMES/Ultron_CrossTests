@@ -1,0 +1,18 @@
+imprimir("🧪 [14/15] (PT-BR) Liberdade de Sintaxe (Híbrida JS/Python)...")
+
+// 1. Estilo C/JavaScript: Tudo na mesma linha!
+funcao soma_rapida(a, b) { retornar a + b; }
+
+// Misturando Blocos!
+se soma_rapida(5, 5) = 10 {
+    imprimir("   ✔️ Funções em 1 linha com { } e ; funcionaram perfeitamente!")
+} senao {
+    jogar "Falha na sintaxe JS-like!"
+}
+
+// 2. Estilo Python Puro: Indentação limpa e dois pontos
+funcao soma_python(a, b):
+    retornar a + b
+
+se soma_python(2, 2) = 4:
+    imprimir("   ✔️ Funções estilo Python (:) funcionaram perfeitamente!")

@@ -1,0 +1,122 @@
+# ==========================================
+# FASE 1: VERBOS HTTP E DUCK-TYPING JSON
+# ==========================================
+
+# GET (Postman Echo)
+res_get = solicitar("https://postman-echo.com/get").avancado({ "method": "GET" })
+afirmar(res_get.status == 200)
+afirmar(res_get.ok == verdadeiro)
+
+# POST (Dicionário aninhado sendo enviado)
+# O Postman Echo converte o payload JSON para o objeto 'data' no retorno
+res_post = solicitar("https://postman-echo.com/post").avancado({ 
+    "method": "POST", 
+    "body": { "linguagem": "Ultron", "alvo": "C11" } 
+})
+afirmar(res_post.status == 200)
+dados_post = res_post.texto.json()
+afirmar(dados_post["data"]["linguagem"] == "Ultron")
+
+# PUT, PATCH, DELETE
+res_put = solicitar("https://postman-echo.com/put").avancado({ "method": "PUT", "body": { "up": verdadeiro } })
+afirmar(res_put.texto.json()["data"]["up"] == verdadeiro)
+
+res_patch = solicitar("https://postman-echo.com/patch").avancado({ "method": "PATCH", "body": { "p": "ok" } })
+afirmar(res_patch.status == 200)
+
+res_del = solicitar("https://postman-echo.com/delete").avancado({ "method": "DELETE" })
+afirmar(res_del.status == 200)
+
+
+# ==========================================
+# FASE 2: RESILIÊNCIA, TIMEOUTS E REDIRECTS (O Teste de Fogo)
+# ==========================================
+
+# DNS Inexistente (Failsafe)
+res_dns = solicitar("https://dominio-inexistente-12345.com").avancado({"method": "GET"})
+afirmar(res_dns.status == 0)
+afirmar(res_dns.ok == falso)
+
+# Timeout de Fibra (Failsafe sem travar CPU)
+# Postman Echo vai segurar por 5 segundos, a fibra Ultron corta em 2.
+res_time = solicitar("https://postman-echo.com/delay/5").avancado({ "method": "GET", "timeout": 2 })
+afirmar(res_time.status == 0)
+
+# Redirecionamentos (3xx -> 200)
+# Postman Echo redireciona para a URL passada no parâmetro
+res_redir = solicitar("https://postman-echo.com/redirect-to?url=https://postman-echo.com/get").avancado({"method": "GET"})
+afirmar(res_redir.status == 200)
+# O Ultron C-Core segue o redirect nativamente no Kernel HTTP e captura o destino final!
+afirmar(res_redir.url == "https://postman-echo.com/get")
+
+# 404 Not Found (Captura limpa, sem estourar exception)
+res_404 = solicitar("https://postman-echo.com/status/404").avancado({ "method": "GET" })
+afirmar(res_404.status == 404)
+afirmar(res_404.ok == falso)
+
+
+# ==========================================
+# FASE 3: HEADERS E API REAL DO MUNDO EXTERNO
+# ==========================================
+
+# Injetando e lendo Headers
+res_auth = solicitar("https://postman-echo.com/headers").avancado({
+    "method": "GET",
+    "headers": { "Authorization": "Bearer Ultron-Master", "X-Super-Poder": "Ativado" }
+})
+dados_auth = res_auth.texto.json()
+# Postman Echo normaliza os headers do JSON de resposta em minúsculas
+afirmar(dados_auth["headers"]["authorization"] == "Bearer Ultron-Master")
+afirmar(dados_auth["headers"]["x-super-poder"] == "Ativado")
+
+# Lendo headers case-insensitive recebidos
+res_head = solicitar("https://postman-echo.com/response-headers?x-ultron-teste=Invisivel").avancado({ "method": "GET" })
+afirmar(res_head.headers["x-ultron-teste"] == "Invisivel")
+
+# Chamada API Pública Real (JSONPlaceholder)
+res_api = solicitar("https://jsonplaceholder.typicode.com/users/1").avancado({ "method": "GET" })
+usuario = res_api.texto.json()
+afirmar(usuario["id"] == 1)
+afirmar(usuario["address"]["city"] == "Gwenborough")
+
+
+# ==========================================
+# FASE 4: BINÁRIOS, FILE I/O E UFCS (A Arte da Magia C11)
+# ==========================================
+criar_diretorio("pasta_temporaria_ultron")
+
+# 1. Baixar uma imagem JPG (Binário Puro de CDN Cloudflare, contém bytes nulos \0)
+res_bin = solicitar("https://reqres.in/img/faces/1-image.jpg").avancado({ "method": "GET" })
+afirmar(res_bin.status == 200)
+tamanho_binario = tamanho(res_bin.bytes)
+afirmar(tamanho_binario > 1000)
+
+# 2. Gravar o U_BYTES puro no disco (Zero-Copy fwrite)
+escrever_arquivo("teste_imagem.jpg", res_bin.bytes)
+escrever_arquivo("pasta_temporaria_ultron/teste_imagem_backup.jpg", res_bin.bytes)
+
+# 3. Ler o arquivo binário do disco de volta para a RAM
+img_disco = ler_arquivo("teste_imagem.jpg")
+afirmar(img_disco.ok == verdadeiro)
+afirmar(tamanho(img_disco.bytes) == tamanho_binario) # Verifica se a integridade binária foi mantida!
+
+# 4. Gravar Dicionários diretamente no disco (Ultron serializa sozinho!)
+config = { "motor": "Tachyon", "versao": 1, "seguro": verdadeiro }
+escrever_arquivo("config_ultron.json", config)
+
+# 5. Ler Texto do disco e converter usando UFCS .json()
+arq_config = ler_arquivo("config_ultron.json")
+afirmar(arq_config.ok == verdadeiro)
+
+config_lida = arq_config.texto.json()
+afirmar(config_lida["motor"] == "Tachyon")
+afirmar(config_lida["seguro"] == verdadeiro)
+
+# 6. UFCS Matemático
+afirmar("42".int() + 10 == 52)
+
+
+# 7. Apagar ambiente
+remover_diretorio("pasta_temporaria_ultron", verdadeiro)
+remover_arquivo("teste_imagem.jpg")
+remover_arquivo("config_ultron.json")

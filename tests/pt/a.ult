@@ -1,0 +1,26 @@
+a = 0.1
+b = 0.2
+c = a + b
+d = 0.314
+far = "0.3"
+
+if(d = 0.3):
+    imprimir("ola")
+
+if d = far:
+    imprimir("oi")
+
+imprimir("\n[2] POST com Dicionário Aninhado")
+res_post = solicitar("https://httpbin.org/post").avancado({ 
+    "method": "POST", 
+    "body": { 
+        "linguagem": "Ultron", 
+        "velocidade": "C11 Bare-Metal" 
+    } 
+})
+dados_post = res_post.texto.json()
+imprimir(f"Servidor ecoou o nosso Body: {dados_post['data']}")
+imprimir(f"Servidor ecoou o nosso Body: {dados_post['json']['linguagem']}")
+imprimir(f"Servidor ecoou o nosso Body: {dados_post['json']}")
+imprimir(f"Servidor ecoou o nosso Body: {dados_post['data']['linguagem']}")
+imprimir(f"Servidor ecoou o nosso Body: {dados_post}")

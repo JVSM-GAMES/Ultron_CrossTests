@@ -1,0 +1,40 @@
+imprimir("========================================")
+imprimir("🌐 ULTRON TACHYON WEB-SERVER M:N 🌐")
+imprimir("========================================")
+
+// 1. Nossa Tarefa Assíncrona Zero-Blocking!
+funcao processar_background(dado) {
+    imprimir(f"⏳ [Background] Iniciando processamento demorado de: {dado}")
+    
+    // Esse atraso solta a The CPU Worker do Kernel pra atender novos Requests! 
+    atrasar(3000) 
+    
+    imprimir(f"✅ [Background] Finalizado processamento de: {dado}")
+}
+
+// 2. Nossa Rota de API Fast-Response
+funcao api_receber(req) {
+    imprimir(f"-> Chegou requisição Web! Carga: {req}")
+    
+    let db_simulado = "SELECT * FROM users"
+    
+    // Dispara a Fibra na Máquina de Fundo e Libera a Rota C em Zero Segundos
+    tarefa(processar_background, req)
+    
+    // Retorna para quem fez Request de The Browser/CURL!
+    retornar json.dumps({
+        "status": 200, 
+        "engine": "Ultron AOT V1.0",
+        "tarefa_status": "enviada para a Máquina Tachyon",
+        "payload": req
+    })
+}
+
+// 3. Cadastramos a Rota C
+servidor_rota_api("/api/teste", api_receber)
+
+imprimir("⚡ O Servidor Ultron agora bloqueará a Thread Principal para ouvir TCP na porta 8080...")
+imprimir("Abra outro terminal e digite: curl http://127.0.0.1:8080/api/teste")
+
+// 4. THE ACCEPTOR LOOP!
+servidor_ouvir("0.0.0.0", 8080)

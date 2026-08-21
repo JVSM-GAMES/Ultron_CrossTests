@@ -1,0 +1,11 @@
+imprimir("🧪 [8/13] (EN-US) English Keywords and Colons...")
+syntax_result = 0
+fn en_test_syntax():
+    if 10 = 10:
+        syntax_result = 200
+    else:
+        syntax_result = 500
+
+en_test_syntax()
+if syntax_result = 200:
+    imprimir("   ✔️ Colons (:) and English Keywords OK!")

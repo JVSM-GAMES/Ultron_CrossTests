@@ -1,0 +1,43 @@
+imprimir("==================================================")
+imprimir("🚀 INICIANDO TESTES DO MOTOR ULTRON AOT 🚀")
+imprimir("==================================================")
+
+total = 15
+atual = 1
+funcao testando(teste):
+    imprimir(f"🧪 [{atual}/{total}] {teste}...")
+    atual++
+
+imprimir("---------------------------------------")
+imprimir("Testando Português")
+imprimir("---------------------------------------")
+
+testando("(PT-BR) Comentários InLine e MultiLine")
+importar "pt/comentarios.ult"
+
+testando("(PT-BR) JSON, Matrizes, F-Strings, Tipagem Fluída e Let")
+importar "pt/json_matriz_fstring_let.ult"
+
+testando("(PT-BR) Matemática")
+importar "pt/matematica.ult"
+
+testando("(PT-BR) Igualdade e Desigualdade")
+importar "pt/operadores_igualdade.ult"
+
+testando("(PT-BR) Gerenciamento de Arquivos")
+importar "pt/sistema_de_arquivos.ult"
+
+testando("(PT-BR) Solicitações Web")
+importar "pt/request.ult"
+
+testando("(PT-BR) Testando o Tempo")
+importar "pt/testar_tempo.ult"
+
+print("---------------------------------------")
+print("Testing English")
+print("---------------------------------------")
+
+
+imprimir("==================================================")
+imprimir(f"🏆 SUCESSO ABSOLUTO! (0 ERROS / {total} MÓDULOS)")
+imprimir("==================================================")

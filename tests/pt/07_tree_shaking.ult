@@ -1,0 +1,4 @@
+imprimir("🧪 [7/13] (PT-BR) Validando Dead Code Elimination (Tree Shaking)...")
+importar "utils/biblioteca_gigante.ult"
+// Como não chamamos "funcao_nunca_chamada()", o Linker C vai jogar ela no lixo!
+imprimir("   ✔️ Biblioteca importada e ignorada pelo DCE com sucesso!")

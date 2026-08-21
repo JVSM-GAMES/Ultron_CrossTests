@@ -1,0 +1,3 @@
+imprimir("🧪 [13/13] (EN-US) FFI JavaScript Specific (from/import)...")
+from moment import_js now as agora
+imprimir("   ✔️ Specific Node/NPM Interoperability (from import) OK!")

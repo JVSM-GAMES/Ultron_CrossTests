@@ -1,0 +1,20 @@
+imprimir("🧪 [11/14] (PT-BR) Testando CLI: Desinstalação e Reinstalação...")
+
+// 1. Tira o Ultron do ar
+cmd("ultron desinstalar")
+res_fora = cmd("ultron versao", false)
+
+se tamanho(res_fora) < 5:
+    imprimir("   ✔️ Ultron desinstalado e removido do PATH com sucesso!")
+senao:
+    jogar "Falha: O Ultron não foi desinstalado corretamente."
+
+// 2. Busca o binário nativo recém compilado na pasta zig-out e força a instalação
+// Usamos o grep linux e head para pegar qualquer binário compatível e instalá-lo de volta
+cmd("../zig-out/x86_64-linux/ultron instalar")
+
+res_dentro = cmd("ultron -v", false)
+se tamanho(res_dentro) > 5:
+    imprimir("   ✔️ Ultron reinstalado e restaurado no sistema!")
+senao:
+    jogar "Falha crítica: O Ultron não conseguiu se reinstalar."

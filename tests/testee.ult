@@ -1,0 +1,89 @@
+// ==========================================
+// 1. CLASSES E DECLARAÇÕES ESTABELECIDAS
+// ==========================================
+classe Entidade {
+    let nome = "Desconhecido"
+    let vida = 100
+    let energia = 50
+}
+
+// ==========================================
+// 2. FUNÇÕES HÍBRIDAS E MATEMÁTICA PURA O(1)
+// ==========================================
+funcao calcular_dano(base, multiplicador) {
+    // Usando expoente (**) e Matemática Segura C11
+    let resultado = (base ** 2) + (multiplicador * 5)
+    retornar resultado
+}
+
+// ==========================================
+// 3. INSTANCIAÇÃO E MANIPULAÇÃO ORIENTADA A OBJETO
+// ==========================================
+chefe = novo_Entidade()
+chefe.nome = "Ultron Supremo"
+chefe.vida = 500
+
+// A Expansão de F-Strings Mágica resolvendo as contas da RAM na hora!
+imprimir(f"Alerta: O chefe {chefe.nome} surgiu com {chefe.vida} de HP e {chefe.energia * 2} de força!")
+
+// ==========================================
+// 4. MATRIZES E O LAÇO FOR-IN
+// ==========================================
+// Lista com inserção via Orientação a Objetos Híbrida (.append)
+inventario = ["Espada Espartana", "Escudo de Adamantium", "Elmo de Prata"]
+inventario.append("Poção de Cura Maxima")
+
+imprimir("=== LISTANDO O INVENTÁRIO (Com o novo Laço For-In O(1)) ===")
+
+// Laço Nativo puro C iterando por um UArray* da Runtime
+para (item em inventario) {
+    imprimir(f" -> Guardado: {item}")
+}
+
+imprimir("==========================================================")
+
+// Dicionário Hashing em O(1) Memory Layout
+status_heroi = { "mana": 100, "defesa": 40 }
+status_heroi["defesa"] = 85
+
+// ==========================================
+// 5. THE PNUMA SHIELD: TRY/CATCH DE HARDWARE
+// ==========================================
+tentar {
+    imprimir("Preparando para calcular ataque critico...")
+    
+    // Dispara C-Matemática! 
+    dano_total = calcular_dano(10, 3)
+    imprimir(f"O golpe desferiu {dano_total} de dano massivo!")
+    
+    nova_vida = chefe.vida - dano_total
+    chefe.vida = nova_vida
+    
+    se (chefe.vida > 0) {
+        imprimir(f"O chefe sobreviveu. Vida restante: {chefe.vida}")
+    } senao {
+        imprimir("O chefe foi destruido. Vitoria!")
+    }
+
+    imprimir("Provocando Colapso no CPU: Divisão por Zero C-Engine...")
+    
+    // A Máquina da Nuvem captura as leis da física da Placa Mãe que construímos no Codegen!
+    falha_fatal = 10 / 0
+    
+} capturar (erro_cpu) {
+    // Escudo acionado! A queda livre cai neste colchão de SetJmp Memory
+    imprimir(f"A Nuvem interveio. Ocorreu um erro letal no Motor: {erro_cpu}")
+}
+
+// O código contínua livremente por baixo do Try/Catch sem Memory Leaks!
+imprimir("Execução Finalizada pela The Ultron V1.0 Engine.")
+
+
+// ==========================================
+// 6. TESTE DE LINTER RUST-LIKE (LSP V1.0)
+// ==========================================
+// DESCOMENTE as duas linhas abaixo e tente compilar para ver a Ferramenta 
+// de Diagnóstico visual sublinhar onde a falha está!
+
+//let quebra = variavel_inexistente + 50
+//imprimir(quebra)
