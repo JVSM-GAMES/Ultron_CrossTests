@@ -23,34 +23,34 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - name: Baixando Binários e Testes
+    - name: "Baixando Binários e Testes"
       uses: actions/checkout@v4
 
-    - name: [Linux/macOS] Configurar Permissões e Instalar Global
+    - name: "[Linux/macOS] Configurar Permissões e Instalar Global"
       if: runner.os != 'Windows'
       run: |
         chmod +x zig-out/${{ matrix.target }}/${{ matrix.bin }}
         sudo ./zig-out/${{ matrix.target }}/${{ matrix.bin }} instalar
         echo "✅ Ultron instalado em /usr/local/bin"
 
-    - name: [Windows] Configurar PATH Global
+    - name: "[Windows] Configurar PATH Global"
       if: runner.os == 'Windows'
       run: |
         echo "${{ github.workspace }}\zig-out\${{ matrix.target }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         echo "✅ PATH configurado para o Windows"
 
-    - name: ⚙️ Teste 1 - Verificação do Binário e Versão
+    - name: "⚙️ Teste 1 - Verificação do Binário e Versão"
       run: ultron versao
 
-    - name: ⏱️ Teste 2 - Roda do Tempo e Scheduler MPSC
+    - name: "⏱️ Teste 2 - Roda do Tempo e Scheduler MPSC"
       run: ultron executar tests/pt/testar_tempo.ult
 
-    - name: 📁 Teste 3 - File System Nativo (Syscalls OS)
+    - name: "📁 Teste 3 - File System Nativo (Syscalls OS)"
       run: ultron executar tests/pt/os_test.ult
 
-    - name: 🌐 Teste 4 - The Ultimate Network & I/O Engine (JSON/HTTP/File)
+    - name: "🌐 Teste 4 - The Ultimate Network & I/O Engine (JSON/HTTP/File)"
       run: ultron executar tests/pt/request.ult
 
-    - name: 🧹 [Linux/macOS] Desinstalação Limpa
+    - name: "🧹 [Linux/macOS] Desinstalação Limpa"
       if: runner.os != 'Windows'
       run: sudo ultron desinstalar
