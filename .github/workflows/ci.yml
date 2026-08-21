@@ -26,6 +26,17 @@ jobs:
     - name: "Baixando Binários e Testes"
       uses: actions/checkout@v4
 
+    - name: "🛠️ Instalando a Toolchain C11 (Zig Compiler)"
+      uses: mlugg/setup-zig@v1
+      with:
+        version: 0.13.0
+
+    - name: "🌍 Pre-configurando Ambiente (Idioma Pt-Br)"
+      shell: bash
+      run: |
+        mkdir -p .Ultron
+        echo "Pt-Br" > .Ultron/lang.txt
+
     - name: "[Linux/macOS] Configurar Permissões e Instalar Global"
       if: runner.os != 'Windows'
       run: |
