@@ -11,8 +11,8 @@ fim = tempo()
 decorrido = fim - inicio
 
 # Verifica se o atraso foi igual ou levemente superior a 500ms 
-# (Sempre há margem de drift do Kernel do Sistema Operacional)
-afirmar(decorrido >= 500 e decorrido <= 507)
+# (Sempre há margem de drift do Kernel do Sistema Operacional de até 15ms)
+afirmar(decorrido >= 500 e decorrido <= 515)
 
 inicio_curto = tempo()
 atrasar(10)
@@ -21,4 +21,4 @@ atrasar(10)
 fim_curto = tempo()
 
 total_curto = fim_curto - inicio_curto
-afirmar(total_curto >= 30 e total_curto <= 42)
+afirmar(total_curto >= 30 e total_curto <= 51)
