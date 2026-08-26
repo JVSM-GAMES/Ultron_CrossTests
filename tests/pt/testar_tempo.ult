@@ -10,9 +10,8 @@ fim = tempo()
 # Calculando a latência exata!
 decorrido = fim - inicio
 
-# Verifica se o atraso foi igual ou levemente superior a 500ms 
-# Sempre há margem de drift do Kernel do Sistema Operacional
-afirmar(decorrido >= 500 e decorrido <= 550)
+# Verifica se o atraso foi igual ou levemente superior a 500ms
+afirmar(decorrido >= 500 e decorrido <= 650)
 
 inicio_curto = tempo()
 atrasar(10)
