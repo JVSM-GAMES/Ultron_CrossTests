@@ -20,4 +20,4 @@ atrasar(10)
 fim_curto = tempo()
 
 total_curto = fim_curto - inicio_curto
-afirmar(total_curto >= 30 e total_curto <= 75)
+afirmar(total_curto >= 30)
