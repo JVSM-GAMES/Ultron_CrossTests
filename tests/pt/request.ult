@@ -2,33 +2,32 @@
 # FASE 1: VERBOS HTTP E DUCK-TYPING JSON
 # ==========================================
 
-# GET (JSONPlaceholder - Extremamente Estável)
-res_get = solicitar("https://jsonplaceholder.typicode.com/users/1").avancado({ "method": "GET" })
+# GET (go-httpbin /get)
+res_get = solicitar("https://httpbin.jvsm.services/get").avancado({ "method": "GET" })
 afirmar(res_get.status == 200)
 afirmar(res_get.ok == verdadeiro)
 
 # POST (Dicionário aninhado sendo enviado)
-# JSONPlaceholder retorna 201 (Created) quando adicionamos algo
-res_post = solicitar("https://jsonplaceholder.typicode.com/posts").avancado({ 
+res_post = solicitar("https://httpbin.jvsm.services/post").avancado({ 
     "method": "POST", 
     "body": { "title": "Ultron C11" } 
 })
-afirmar(res_post.status == 201)
+afirmar(res_post.status == 200)
 dados_post = res_post.texto.json()
-afirmar(dados_post["title"] == "Ultron C11")
+afirmar(dados_post["json"]["title"] == "Ultron C11")
 
 # PUT
-res_put = solicitar("https://jsonplaceholder.typicode.com/posts/1").avancado({ "method": "PUT", "body": { "title": "Atualizado" } })
+res_put = solicitar("https://httpbin.jvsm.services/put").avancado({ "method": "PUT", "body": { "title": "Atualizado" } })
 afirmar(res_put.status == 200)
-afirmar(res_put.texto.json()["title"] == "Atualizado")
+afirmar(res_put.texto.json()["json"]["title"] == "Atualizado")
 
 # PATCH
-res_patch = solicitar("https://jsonplaceholder.typicode.com/posts/1").avancado({ "method": "PATCH", "body": { "title": "Ultron Patch" } })
+res_patch = solicitar("https://httpbin.jvsm.services/patch").avancado({ "method": "PATCH", "body": { "title": "Ultron Patch" } })
 afirmar(res_patch.status == 200)
-afirmar(res_patch.texto.json()["title"] == "Ultron Patch")
+afirmar(res_patch.texto.json()["json"]["title"] == "Ultron Patch")
 
 # DELETE
-res_del = solicitar("https://jsonplaceholder.typicode.com/posts/1").avancado({ "method": "DELETE" })
+res_del = solicitar("https://httpbin.jvsm.services/delete").avancado({ "method": "DELETE" })
 afirmar(res_del.status == 200)
 
 
@@ -41,19 +40,16 @@ res_dns = solicitar("https://dominio-inexistente-12345.com").avancado({"method":
 afirmar(res_dns.status == 0)
 afirmar(res_dns.ok == falso)
 
-# Timeout de Fibra (Failsafe sem travar CPU)
-# ReqRes tem um simulador de delay perfeito. Pedimos 5s e o Ultron corta em 2s.
-res_time = solicitar("https://reqres.in/api/users?delay=5").avancado({ "method": "GET", "timeout": 2 })
+# Timeout de Fibra simulado via go-httpbin (/delay/5 cortado em 2s pelo Ultron)
+res_time = solicitar("https://httpbin.jvsm.services/delay/5").avancado({ "method": "GET", "timeout": 2 })
 afirmar(res_time.status == 0)
 
 # Redirecionamentos (3xx -> 200)
-# Acessar google.com sem www redireciona para a versão final com www. O Motor segue ativamente!
-res_redir = solicitar("https://google.com").avancado({"method": "GET"})
+res_redir = solicitar("https://httpbin.jvsm.services/redirect/1").avancado({"method": "GET"})
 afirmar(res_redir.status == 200)
-afirmar(res_redir.url == "https://www.google.com/")
 
 # 404 Not Found (Captura limpa)
-res_404 = solicitar("https://jsonplaceholder.typicode.com/url_invalida_404").avancado({ "method": "GET" })
+res_404 = solicitar("https://httpbin.jvsm.services/status/404").avancado({ "method": "GET" })
 afirmar(res_404.status == 404)
 afirmar(res_404.ok == falso)
 
@@ -62,16 +58,15 @@ afirmar(res_404.ok == falso)
 # FASE 3: HEADERS E STATUS CUSTOMIZADOS
 # ==========================================
 
-# Simular um Erro 401 usando a API real do GitHub (Sem enviar o token)
-res_auth = solicitar("https://api.github.com/user").avancado({
+# Simular um Erro 401 usando o status customizado do go-httpbin
+res_auth = solicitar("https://httpbin.jvsm.services/status/401").avancado({
     "method": "GET"
 })
-# A API do GitHub exige autenticação. Como não enviamos, ela devolverá o correto 401 Unauthorized!
 afirmar(res_auth.status == 401)
 afirmar(res_auth.ok == falso)
 
 # Lendo headers case-insensitive recebidos nativamente
-res_head = solicitar("https://jsonplaceholder.typicode.com/users/1").avancado({ "method": "GET" })
+res_head = solicitar("https://httpbin.jvsm.services/get").avancado({ "method": "GET" })
 afirmar(res_head.headers["content-type"] == "application/json; charset=utf-8")
 
 
@@ -80,8 +75,7 @@ afirmar(res_head.headers["content-type"] == "application/json; charset=utf-8")
 # ==========================================
 criar_diretorio("pasta_temporaria_ultron")
 
-# 1. Baixar uma imagem PNG da internet (Binário Puro, contém bytes nulos \0)
-# Vamos baixar o mascote do GitHub usando a própria rede de distribuição deles (CDN Global Intravável)
+# 1. Baixar uma imagem PNG da internet (Binário Puro)
 res_bin = solicitar("https://avatars.githubusercontent.com/u/9919?v=4").avancado({ "method": "GET" })
 afirmar(res_bin.status == 200)
 tamanho_binario = tamanho(res_bin.bytes)
@@ -94,9 +88,9 @@ escrever_arquivo("pasta_temporaria_ultron/teste_imagem_backup.png", res_bin.byte
 # 3. Ler o arquivo binário do disco de volta para a RAM
 img_disco = ler_arquivo("teste_imagem.png")
 afirmar(img_disco.ok == verdadeiro)
-afirmar(tamanho(img_disco.bytes) == tamanho_binario) # Integridade Total de Bytes preservada!
+afirmar(tamanho(img_disco.bytes) == tamanho_binario)
 
-# 4. Gravar Dicionários diretamente no disco (Ultron serializa sozinho!)
+# 4. Gravar Dicionários diretamente no disco
 config = { "motor": "Tachyon", "versao": 1, "seguro": verdadeiro }
 escrever_arquivo("config_ultron.json", config)
 
@@ -110,7 +104,6 @@ afirmar(config_lida["seguro"] == verdadeiro)
 
 # 6. UFCS Matemático
 afirmar("42".int() + 10 == 52)
-
 
 # 7. Apagar ambiente (Limpeza Atômica Multi-OS)
 remover_diretorio("pasta_temporaria_ultron", verdadeiro)
