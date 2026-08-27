@@ -1,26 +1,70 @@
-a = 0.1
-b = 0.2
-c = a + b
-d = 0.314
-far = "0.3"
+classe Inimigo:
+    nome = "Goblin"
+    vida = 100
+    ativo = verdadeiro
 
-if(d = 0.3):
-    imprimir("ola")
+    fn init(n, v):
+        meu.nome = n
+        meu.vida = v
 
-if d = far:
-    imprimir("oi")
+    fn sofrer_dano(dano):
+        meu.vida = meu.vida - dano
+        se meu.vida <= 0:
+            meu.ativo = falso
+            imprimir(f"O {meu.nome} foi derrotado!")
 
-imprimir("\n[2] POST com Dicionário Aninhado")
-res_post = solicitar("https://httpbin.org/post").avancado({ 
-    "method": "POST", 
-    "body": { 
-        "linguagem": "Ultron", 
-        "velocidade": "C11 Bare-Metal" 
-    } 
-})
-dados_post = res_post.texto.json()
-imprimir(f"Servidor ecoou o nosso Body: {dados_post['data']}")
-imprimir(f"Servidor ecoou o nosso Body: {dados_post['json']['linguagem']}")
-imprimir(f"Servidor ecoou o nosso Body: {dados_post['json']}")
-imprimir(f"Servidor ecoou o nosso Body: {dados_post['data']['linguagem']}")
-imprimir(f"Servidor ecoou o nosso Body: {dados_post}")
+# Instanciando:
+deixe chefe = novo Inimigo("Troll Mestre", 500)
+chefe.sofrer_dano(150)
+
+
+
+# Tipagem Estrita C (Voando no CPU) com Valor Padrão
+funcao calcular_poder(int base, int multiplicador = 2):
+    retornar base * multiplicador
+
+# Duck-Typing (Aceita Json, Structs, etc)
+fn processar_rede(dados):
+    deixe id = dados["user_id"]
+    imprimir(f"Processando usuário {id}")
+
+
+
+# Iteração pura estilo Python sob nossa API de memória (u_array)
+deixe inventario = ["Espada de Fogo", "Escudo O(1)", "Elixir"]
+
+para item em inventario:
+    imprimir(f"Você equipou: {item}")
+
+# While clássico (Funciona sem chaves usando a indentação graças ao nosso pre-processador!)
+deixe int bateria = 10
+enquanto bateria > 0:
+    bateria--
+    se bateria == 5:
+        imprimir("Bateria pela metade!")
+
+
+
+deixe nick = "JVSM"
+deixe int ping = 45
+
+se nick == "JVSM" e ping < 50:
+    imprimir("Partida Competitiva Autorizada!")
+senao se ping > 200:
+    imprimir("Aviso de Latência!")
+senao:
+    imprimir("Iniciando modo Casual.")
+
+
+
+deixe status_rede = 200
+
+escolha status_rede:
+    caso 200:
+        imprimir("Sucesso HTTP!")
+    caso 404:
+        imprimir("Não encontrado.")
+    caso 500:
+        imprimir("Erro na Matrix do Servidor!")
+    padrao:
+        imprimir("Código desconhecido.")
