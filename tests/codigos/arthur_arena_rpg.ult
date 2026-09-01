@@ -1,0 +1,375 @@
+# ==========================================
+# 🗡️ ARTHUR'S ARENA: A MASTERCLASS RPG (ULTRON AOT)
+# Engine: DOD (Data-Oriented), L1 Cache & C-ABI Estrito
+# ==========================================
+
+# ==========================================
+# 1. CONTRATOS C (LAYOUT E INTERFACES)
+# ==========================================
+classe Entidade:
+    nome = "Base"
+    vida = 0.0
+    ataque = 0.0
+
+    fn sofrer_dano(d_recebido):
+        meu.vida = meu.vida - d_recebido
+        se meu.vida < 0.0:
+            meu.vida = 0.0
+
+trait Combatente:
+    fn atacar(Entidade alvo):
+
+# ==========================================
+# 2. DEFINIÇÕES DE ESTRUTURA L1
+# ==========================================
+classe Colosso usa Entidade, Combatente:
+    nome = "Colosso de Pedra"
+    vida = 150.0
+    ataque = 25.0
+
+    fn init():
+        meu.vida = 150.0
+
+    fn atacar(Entidade alvo):
+        imprimir(f"   ⛰️ {meu.nome} esmaga {alvo.nome} ({meu.ataque} dano)!")
+        alvo.sofrer_dano(meu.ataque)
+
+classe Lacaio usa Entidade, Combatente:
+    nome = "Goblin Assassino"
+    vida = 40.0
+    ataque = 15.0
+
+    fn init():
+        meu.vida = 40.0
+
+    fn atacar(Entidade alvo):
+        imprimir(f"   🗡️ {meu.nome} apunhala {alvo.nome} ({meu.ataque} dano)!")
+        alvo.sofrer_dano(meu.ataque)
+
+classe GolemAliado usa Entidade, Combatente:
+    nome = "Golem de Cristal"
+    vida = 120.0
+    ataque = 10.0
+
+    fn init():
+        meu.vida = 120.0
+
+    fn atacar(Entidade alvo):
+        imprimir(f"   🛡️ {meu.nome} rebate em {alvo.nome}! ({meu.ataque} dano)!")
+        alvo.sofrer_dano(meu.ataque)
+
+classe ChefeTroll usa Entidade:
+    nome = "Gargantua, O Rei Troll"
+    vida = 400.0
+    ataque = 30.0
+    enfurecido = falso
+
+    fn init():
+        meu.vida = 400.0
+
+    fn sofrer_dano(d_recebido):
+        meu.vida = meu.vida - d_recebido
+        se meu.vida < 0.0:
+            meu.vida = 0.0
+        
+        # MÁQUINA DE ESTADOS L1: ENRAGE
+        se meu.vida <= 200.0 e meu.enfurecido == falso:
+            meu.enfurecido = verdadeiro
+            meu.ataque = meu.ataque + 15.0
+            imprimir(f"   ⚠️ ALARME SISTEMÁTICO: {meu.nome} entrou em FÚRIA! Ataque subiu para {meu.ataque}!")
+
+    fn invocar():
+        se aleatorio(0.0, 10.0) > 6.0:
+            retornar novo Colosso()
+        senao:
+            retornar novo Lacaio()
+
+classe Heroi usa Entidade:
+    nome = "Arthur"
+    vida = 250.0
+    ataque = 45.0
+    pocoes = 3.0
+    mana = 2.0
+    mana_max = 5.0
+
+    fn init(n):
+        meu.nome = n
+        meu.vida = 250.0
+
+    fn sofrer_dano(d_recebido):
+        meu.vida = meu.vida - d_recebido
+        se meu.vida < 0.0:
+            meu.vida = 0.0
+        imprimir(f"   🩸 {meu.nome} sangra! Sofreu {d_recebido} de dano. [HP Restante: {meu.vida}]")
+
+    fn curar():
+        se meu.pocoes > 0.0:
+            meu.vida = meu.vida + 100.0
+            meu.pocoes = meu.pocoes - 1.0
+            imprimir(f"   🧪 {meu.nome} bebe uma Poção Sagrada! Vida restaurada para {meu.vida}.")
+        senao:
+            imprimir(f"   ❌ {meu.nome} buscou por poções, mas o frasco está vazio!")
+
+    fn regenerar_mana():
+        se meu.mana < meu.mana_max:
+            meu.mana = meu.mana + 1.0
+
+
+# ===============================================
+# 3. MOTOR DO JOGO & INTERFACE (GAME LOOP)
+# ===============================================
+limpar_tela()
+imprimir("==================================================")
+imprimir("       🛡️  A ARENA DE ARTHUR (ULTRON AOT) 🛡️       ")
+imprimir("==================================================")
+
+deixe nome_jogador = entrada(">> Digite o nome do seu Herói (Enter para 'Arthur'): ")
+se nao nome_jogador:
+    nome_jogador = "Arthur"
+
+deixe heroi = novo Heroi(nome_jogador)
+deixe chefe = novo ChefeTroll()
+deixe linha_aliada = []
+deixe linha_inimiga = []
+
+linha_aliada.append(heroi)
+linha_inimiga.append(chefe.invocar())
+linha_inimiga.append(chefe.invocar())
+
+deixe int turno = 1
+pausar("\n[ Pressione QUALQUER TECLA para adentrar a Arena... ]")
+
+enquanto heroi.vida > 0.0 e chefe.vida > 0.0:
+    limpar_tela()
+    imprimir(f"================== ⏳ TURNO {turno} ==================")
+    
+    deixe int def_ini = tamanho(linha_inimiga)
+    
+    # ------------------------------------------------
+    # HUD: VARREDURA DE MEMÓRIA L1 O(N)
+    # ------------------------------------------------
+    imprimir("🛡️ [ TROPAS ALIADAS ]")
+    para aliado em linha_aliada:
+        deixe Entidade a = aliado
+        se a.nome == heroi.nome:
+            imprimir(f"  ▶ [Líder] {a.nome} - HP: {a.vida} | 🧪 Poções: {heroi.pocoes} | ✨ Mana: {heroi.mana}/{heroi.mana_max}")
+        senao:
+            imprimir(f"  ▶ {a.nome} - HP: {a.vida}")
+
+    imprimir("\n⚔️ [ HORDA INIMIGA ]")
+    se def_ini > 0:
+        deixe int idx = 0
+        para inimigo em linha_inimiga:
+            deixe Entidade i = inimigo
+            se idx == 0:
+                imprimir(f"  🎯 [ALVO DA FRENTE] {i.nome} - HP: {i.vida}")
+            senao:
+                imprimir(f"  ▶ {i.nome} - HP: {i.vida}")
+            idx = idx + 1
+        # Chefe fica na retaguarda
+        imprimir(f"  👑 [CHEFE] {chefe.nome} - HP: {chefe.vida}")
+    senao:
+        # Quando não tem lacaio, o chefe é o alvo da frente
+        imprimir(f"  🎯 [CHEFE VULNERÁVEL] {chefe.nome} - HP: {chefe.vida}")
+    imprimir("--------------------------------------------------\n")
+
+    # =====================================
+    # TURNO DO JOGADOR (I/O e Decisão Lógica)
+    # =====================================
+    imprimir("Escolha sua ação principal:")
+    imprimir(f"  [1] ⚔️ Ataque Físico Normal (Zero Mana) -> Causa entre {heroi.ataque + 5.0} e {heroi.ataque + 15.0} de Dano.")
+    imprimir("  [2] 🧪 Beber Poção Sagrada (+100 HP)")
+    imprimir("  [3] ✨ Abrir Grimório Mágico (Sub-Menu)")
+    
+    deixe acao = entrada("\n>> Opção (1, 2 ou 3): ")
+    imprimir("\n[ RESOLUÇÃO DO TURNO ]")
+
+    se acao == "2":
+        heroi.curar()
+    senao se acao == "3":
+        # SUB-MENU DE MAGIAS DETALHADO
+        imprimir("   [ GRIMÓRIO DE MAGIAS ]")
+        imprimir("     [1] ✨ Invocar Golem (1 Mana) -> Cria um Tanker com 120 HP para receber golpes no seu lugar.")
+        imprimir(f"     [2] 🗡️ EXCALIBUR (1 Mana) -> Causa Dano Massivo ({heroi.ataque * 2.5}) no alvo da frente.")
+        imprimir(f"     [3] ⚡ Raio Arcano (2 Mana) -> Ignora a horda e acerta {heroi.ataque * 1.5} de dano DIRETO no Chefe.")
+        imprimir("     [4] 🔥 Terremoto L1 (3 Mana) -> Causa 20 de dano verdadeiro em TODOS os inimigos da tela.")
+        
+        deixe mag = entrada("   >> Conjurar (1 a 4) ou Enter para cancelar: ")
+        
+        se mag == "1":
+            se heroi.mana >= 1.0:
+                imprimir(f"   ✨ {heroi.nome} conjura o Golem de Cristal para defender a base!")
+                deixe golem = novo GolemAliado()
+                
+                # C-METAL: Reconstrução Segura do Array (Push-Front O(N)) via append
+                deixe nova_linha = []
+                nova_linha.append(golem)
+                para aliado_antigo em linha_aliada:
+                    nova_linha.append(aliado_antigo)
+                linha_aliada = nova_linha
+                
+                heroi.mana = heroi.mana - 1.0
+            senao:
+                imprimir("   ❌ Mana insuficiente para conjurar o Golem!")
+                
+        senao se mag == "2":
+            se heroi.mana >= 1.0:
+                heroi.mana = heroi.mana - 1.0
+                deixe int dano_exc = heroi.ataque * 2.5
+                imprimir(f"   🗡️ {heroi.nome} empunha EXCALIBUR! A lâmina de luz rasga o compilador!")
+                se def_ini > 0:
+                    deixe Entidade alvo_p = linha_inimiga[0]
+                    imprimir(f"   💥 Um corte perfeito oblitera {alvo_p.nome} causando {dano_exc} de dano!")
+                    alvo_p.sofrer_dano(dano_exc)
+                senao:
+                    imprimir(f"   💥 O golpe sagrado atinge {chefe.nome} em cheio para {dano_exc} de dano!")
+                    chefe.sofrer_dano(dano_exc)
+            senao:
+                imprimir("   ❌ Mana insuficiente para canalizar Excalibur!")
+
+        senao se mag == "3":
+            se heroi.mana >= 2.0:
+                deixe int dano_mag = heroi.ataque * 1.5
+                imprimir(f"   ⚡ {heroi.nome} gasta 2 de Mana e dispara o Raio Arcano L1!")
+                imprimir(f"   🎯 O Raio contorna as tropas e atinge {chefe.nome} causando {dano_mag} de dano!")
+                chefe.sofrer_dano(dano_mag)
+                heroi.mana = heroi.mana - 2.0
+            senao:
+                imprimir("   ❌ Mana insuficiente para o Raio Arcano!")
+
+        senao se mag == "4":
+            se heroi.mana >= 3.0:
+                imprimir(f"   🔥 {heroi.nome} afunda a espada no chão... TERREMOTO DE FOGO!")
+                para inimigo em linha_inimiga:
+                    deixe Entidade alvo_aoe = inimigo
+                    alvo_aoe.sofrer_dano(20.0)
+                    imprimir(f"      ♨️ {alvo_aoe.nome} queima por 20 de dano!")
+                chefe.sofrer_dano(20.0)
+                heroi.mana = heroi.mana - 3.0
+            senao:
+                imprimir("   ❌ Mana insuficiente para o Terremoto L1!")
+        senao:
+            imprimir("   ➰ Feitiço cancelado. Você perdeu o foco e recuou.")
+            
+    senao:
+        # Ataque Físico Padrão
+        deixe int d = heroi.ataque + aleatorio(5.0, 15.0)
+        se def_ini > 0:
+            deixe Entidade alvo_p = linha_inimiga[0]
+            imprimir(f"   ⚔️ {heroi.nome} investe contra {alvo_p.nome} e causa {d} de dano!")
+            alvo_p.sofrer_dano(d)
+        senao:
+            imprimir(f"   🎯 Caminho livre! {heroi.nome} golpeia {chefe.nome} para {d} de dano!")
+            chefe.sofrer_dano(d)
+
+    # =====================================
+    # FASE AUTÔNOMA: ALIADOS ATACAM
+    # =====================================
+    deixe int def_ini_agora = tamanho(linha_inimiga) 
+    se def_ini_agora > 0 e tamanho(linha_aliada) > 1:
+        dormir(400)
+        imprimir("\n[ CONTRA-ATAQUE DA FRONTLINE ALIADA ]")
+        deixe Entidade alvo_inimigo = linha_inimiga[0]
+        
+        para aliado em linha_aliada:
+            deixe Entidade a = aliado
+            se a.nome != heroi.nome e alvo_inimigo.vida > 0.0:
+                se a.nome == "Golem de Cristal":
+                    deixe GolemAliado aliado_lutador = aliado
+                    aliado_lutador.atacar(alvo_inimigo)
+                dormir(300)
+
+    # =====================================
+    # TURNO DO INIMIGO (BLINDADO CONTRA SEGFAULT E ITERADORES)
+    # =====================================
+    se chefe.vida > 0.0:
+        imprimir("\n[ TURNO DA HORDA ]")
+        dormir(400)
+        
+        para tropa em linha_inimiga:
+            deixe achou_alvo = falso
+            deixe Entidade alvo_atual = linha_aliada[0]
+            
+            # Busca o primeiro aliado vivo de forma segura
+            para aliado_candidato em linha_aliada:
+                deixe Entidade ac = aliado_candidato
+                se ac.vida > 0.0 e achou_alvo == falso:
+                    alvo_atual = ac
+                    achou_alvo = verdadeiro
+
+            se alvo_atual.vida > 0.0:
+                deixe Entidade s = tropa
+                # C-METAL DOWNCAST ESTÁTICO Seguro
+                se s.nome == "Colosso de Pedra":
+                    deixe Colosso agressor_c = tropa 
+                    agressor_c.atacar(alvo_atual)
+                senao:
+                    deixe Lacaio agressor_l = tropa
+                    agressor_l.atacar(alvo_atual)
+                
+                se alvo_atual.vida == 0.0:
+                    se alvo_atual.nome != heroi.nome:
+                        imprimir(f"   💥 Defesa rompida! {alvo_atual.nome} foi destruído!")
+            dormir(300)
+
+        # Chefe invoca mais tropas
+        se tamanho(linha_inimiga) < 3 e aleatorio(0.0, 10.0) > 4.0:
+            deixe recruta = chefe.invocar()
+            deixe Entidade rec_e = recruta
+            imprimir(f"   📯 [CHEFE] {chefe.nome} urra de raiva! {rec_e.nome} entra na Arena!")
+            linha_inimiga.append(recruta)
+            
+        # Contra-ataque do Chefe caso a linha de frente inimiga esteja vazia
+        se tamanho(linha_inimiga) == 0 e tamanho(linha_aliada) > 0:
+            deixe achou_alvo_chefe = falso
+            deixe Entidade alvo_atual_chefe = linha_aliada[0]
+            
+            para aliado_candidato em linha_aliada:
+                deixe Entidade ac_c = aliado_candidato
+                se ac_c.vida > 0.0 e achou_alvo_chefe == falso:
+                    alvo_atual_chefe = ac_c
+                    achou_alvo_chefe = verdadeiro
+            
+            se alvo_atual_chefe.vida > 0.0:
+                imprimir(f"   🌋 {chefe.nome} ataca diretamente {alvo_atual_chefe.nome} ({chefe.ataque} dano)!")
+                alvo_atual_chefe.sofrer_dano(chefe.ataque)
+
+    # =====================================
+    # LIMPEZA DA ARENA (Garbage Collection Manual)
+    # =====================================
+    deixe limp_aliada = []
+    para aliado em linha_aliada:
+        deixe Entidade c_ali = aliado
+        se c_ali.vida > 0.0:
+            limp_aliada.append(aliado)
+        senao se c_ali.nome != heroi.nome:
+            imprimir(f"   🪦 O corpo de {c_ali.nome} despedaçou-se! (Ponteiro liberado)")
+            matar(aliado)
+    linha_aliada = limp_aliada
+
+    deixe limp_ini = []
+    para inimigo em linha_inimiga:
+        deixe Entidade c_ini = inimigo
+        se c_ini.vida > 0.0:
+            limp_ini.append(inimigo)
+        senao:
+            imprimir(f"   💀 {c_ini.nome} tombou sem vida!")
+            matar(inimigo)
+    linha_inimiga = limp_ini
+
+    heroi.regenerar_mana()
+    pausar("\n[ Pressione QUALQUER TECLA para o próximo turno... ]")
+    turno++
+
+# =====================================
+# TELA DE FIM DE JOGO
+# =====================================
+limpar_tela()
+imprimir("==================================================")
+se heroi.vida > 0.0:
+    imprimir(f"🏆 VITÓRIA GLORIOSA! {heroi.nome} subjugou o Lorde Troll!")
+    imprimir("A Matrix L1 da Arena foi purificada. O Compilador descansa.")
+senao:
+    imprimir(f"☠️ {heroi.nome} caiu em batalha...")
+    imprimir("Seus Handles de Memória vagarão pelo Void C11 para sempre.")
+imprimir("==================================================")

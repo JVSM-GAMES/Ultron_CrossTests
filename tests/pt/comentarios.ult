@@ -9,5 +9,4 @@ Olaaaaaa
 Oi
 **/
 mutacao_valor = resultado_sintaxe
-se mutacao_valor = 200:
-    //imprimir("   ✔️ Sintaxe e Mutações OK!")
+afirmar(mutacao_valor = 200)

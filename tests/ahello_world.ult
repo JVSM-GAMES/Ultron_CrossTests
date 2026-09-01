@@ -1,0 +1,47 @@
+imprimir("==========================================================================")
+imprimir("ULTRON BARE-METAL: MAQUINA DE ESTADO E AUTO-RECUPERACAO DE HARDWARE")
+imprimir("==========================================================================")
+
+# ====================================================================
+# VARIÁVEIS GLOBAIS DE HARDWARE (Estado Persistente do Microcontrolador)
+# ====================================================================
+estado_motor = "Desligado"
+temperatura_sensor = 25.0
+ciclos = 0.0
+
+# ====================================================================
+# FUNCAO 1: O BOOT LOADER
+# Chamada pelo C-ABI ao receber energia na placa ou após o Sistema de
+# Seguranca determinar que a CPU entrou em falha estrutural persistente.
+# ====================================================================
+fn configuracao():
+    imprimir("\n[BOOT] Aplicando tensoes iniciais...")
+    estado_motor = "Ligado"
+    temperatura_sensor = 25.0
+    ciclos = 0.0
+    imprimir("[BOOT] Calibragem concluida. Entrando na Malha de Execucao (Loop).")
+
+# ====================================================================
+# FUNCAO 2: A MALHA INFINITA DE CONTROLE
+# Operacao em clock real. Se ocorrer estouro ou instrucao invalida,
+# a API isola o clock local sem parar a CPU do equipamento.
+# ====================================================================
+fn repeticao():
+    ciclos++
+    temperatura_sensor = temperatura_sensor + aleatorio(0.0, 3.0)
+
+    imprimir(f"[TICK {ciclos}] Motor: {estado_motor} | Temp (Celcius): {temperatura_sensor}")
+
+    # SIMULADOR DO THREE-STRIKE KERNEL JUMPER:
+    # Simulamos um mau contato físico no cabo do sensor. Ele falhará por
+    # 3 ciclos consecutivos exatos. Isso ativara a guilhotina da Placa-Mae.
+    se ciclos >= 3.0 e ciclos <= 5.0:
+        imprimir(f"   [ALERTA] Interferencia detectada no ciclo {ciclos}. I2C abortado.")
+        
+        # O disparo abaixo e interceptado instantaneamente em C (longjmp).
+        # A instrucao a seguir (que danificaria o robo) JAMAIS rodara:
+        jogar "ErroPinoDesconectado"
+        estado_motor = "CurtoCircuito_Motor_Explodindo"
+
+    # Reduzindo o estresse do Clock na simulação
+    atrasar(100)

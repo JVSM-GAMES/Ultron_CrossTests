@@ -1,0 +1,83 @@
+# ==========================================
+# TRUTHINESS CONDICIONAL "O(1)" ULTRON AOT
+# Arrays Vazios, Numeros, Strings Vazias e Curto-Circuito
+# ==========================================
+
+deixe array_vazio = []
+deixe array_cheio = [10, 20]
+deixe dict_vazio = {}
+deixe string_vazia = ""
+deixe valor_nulo = nulo
+deixe valor_zero = 0
+
+# 1. Comportamento Truthy (Testes Base Python Like e Falsos Implícitos O(1))
+se nao array_vazio:
+    # A Matrix da C-ABI L1 detectou que len = 0 de Imediato, cortou alocamento Inútil e Bypasseou!
+    afirmar(array_cheio)
+
+# Loop Infinito com Condições e Iteradores Desestruturados:
+deixe num_rodadas = 23
+enquanto num_rodadas:
+    num_rodadas--
+    se num_rodadas == 0:
+        afirmar(num_rodadas == 0)
+
+# Dicionários & Nulo Fluído (C Pointer Null):
+se nao valor_nulo:
+    afirmar(nao dict_vazio e nao string_vazia)
+
+# Truthy Direcionados Booleanos no e / ou
+afirmar(array_cheio e "Algum Texto" e verdadeiro)
+
+
+# =========================================================
+# AUDITORIA AVANÇADA (Curto-Circuito e Retornos IEEE 754)
+# =========================================================
+
+# 1. Short-Circuiting (A Máquina NÃO deve invocar o que não precisa)
+deixe a_bomba_explodiu = falso
+
+fn funcao_bomba():
+    a_bomba_explodiu = verdadeiro
+    retornar verdadeiro
+
+# Como 'verdadeiro' resolve o lado esquerdo do 'ou', o C11 aborta a execução do lado direito instantaneamente.
+afirmar(verdadeiro ou funcao_bomba())
+# Se não houver Short-Circuit, essa variável será Verdadeira e o código crashará abaixo!
+afirmar(a_bomba_explodiu == falso)
+
+# O 'e' (And) falha imediatamente no 'falso'
+afirmar((falso e funcao_bomba()) == falso)
+afirmar(a_bomba_explodiu == falso)
+
+
+# 2. Retorno Lógico Estrito (Paradigma Sistemas e Segurança C/Rust)
+# Python e JS retornam '20'. Ultron e Rust retornam a Prova Lógica de Registrador (1.0 = Verdade)
+deixe resultado_logico = array_cheio e "Texto Aleatorio"
+afirmar(resultado_logico == 1) 
+
+
+# 3. Flutuação Float Estrita e Negativos!
+deixe int valor_negativo = -1
+deixe int valor_float = 0.0
+
+afirmar(valor_negativo)          # -1 é truthy absoluto
+afirmar(nao valor_float)         # 0.0 cai na rede do zero
+afirmar(valor_negativo e verdadeiro)
+
+# Criamos a divisão suja no CPU
+deixe zero1 = 0.0
+deixe zero2 = 0.0
+deixe valor_nan = zero1 / zero2
+
+# Avaliação Ultron C11 Absoluta: 
+afirmar(nao valor_nan) 
+afirmar((valor_nan e verdadeiro) == falso)
+
+# Comparação dinâmica
+afirmar(valor_nan = valor_nan)
+
+#Comparação nível 2(Comparar com == daria erro por exergar dois NaN como diferentes)
+afirmar(valor_nan !== valor_nan)
+
+# Se não deu erro, funcionou.

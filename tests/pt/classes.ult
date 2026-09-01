@@ -1,0 +1,137 @@
+# ====================================================================
+# 1. FUNÇÕES: RECURSIVIDADE, TIPAGENS E ARGUMENTOS IMPLÍCITOS O(1)
+# O compilador extrai a aridade em Compile-Time e injeta Nulls na C-ABI.
+# ====================================================================
+
+# Teste 1: Tipagem rigorosa (int) e Recursividade
+# Força o motor a empilhar (Call Stack) operações C diretas sem corromper memória.
+fn fibonacci(int n):
+    se n <= 1:
+        retornar n
+    retornar fibonacci(n - 1) + fibonacci(n - 2)
+
+afirmar(fibonacci(7) == 13.0)
+
+# Teste 2: Omissão de parâmetros (Argumentos Default) e Mistura de Tipos.
+# A função pede 4 parâmetros: 2 com tipos explícitos de Metal C (double, string)
+# e 2 fluídos/dinâmicos que já trazem valores-padrão (multiplicador e reducao).
+fn calcular_dano(double ataque_base, string tipo_dano, multiplicador = 1.5, double reducao = 0.0):
+    deixe dano_final = (ataque_base * multiplicador) - reducao
+    retornar f"[{tipo_dano}] Dano Registrado: {dano_final}"
+
+# Chamada A (Padrão 100% explícito): Passando todos os 4 argumentos.
+# O motor sobrescreve o 1.5 e o 0.0 pelos valores informados nativamente.
+atk_cheio = calcular_dano(100.0, "Água", 2.0, 10.0)
+afirmar(atk_cheio == "[Água] Dano Registrado: 190")
+
+# Chamada B (Omissão Parcial): Passando 3 argumentos.
+# Falta a "redução". O injetor C-ABI do Ultron auto-completa o final com NULL
+# e o "Unboxer L1" converte esse NULL no Default 0.0 programado!
+atk_parcial = calcular_dano(100.0, "Fogo", 2.0)
+afirmar(atk_parcial == "[Fogo] Dano Registrado: 200")
+
+# Chamada C (Omissão Máxima): Passando apenas os 2 argumentos obrigatórios.
+# Faltam 2 argumentos! A engine reage e aciona ambos os Defaults (1.5 e 0.0).
+atk_minimo = calcular_dano(100.0, "Terra")
+afirmar(atk_minimo == "[Terra] Dano Registrado: 150")
+
+# ====================================================================
+# 2. HERANÇA L1 (PUNNING C11), CONTROLE INSTANCIAL E TRAITS
+# Memory Punning espelha as declarações mães.
+# Traits verificam adesões contratuais a interfaces no parser do AST.
+# ====================================================================
+trait Interagivel:
+    fn interagir(forca):
+
+classe ObjetoMapa:
+    # A classe Base cimenta os layouts de posições primárias da memória
+    id = 0.0
+    estado = "Inteiro"
+
+    fn destruir():
+        meu.estado = "Destruido"
+
+# Herdando 'ObjetoMapa' estruturalmente e aderindo ao Contrato de 'Interagivel'
+classe Barril usa ObjetoMapa, Interagivel:
+    # --- Espelho Obrigatório da Mãe para O(1) C-Memory Punning ---
+    id = 0.0
+    estado = "Inteiro"
+    
+    # --- Extensão e Atributos da Filha (Coleção Isolada) ---
+    conteudo = []
+    
+    fn init(int serial):
+        meu.id = serial
+        meu.conteudo.append("Ouro")
+        
+    fn destruir():
+        # Override Puro: Subclasses reconfiguram suas funções localmente
+        meu.estado = "Explodido"
+    
+    fn interagir(forca = 1.0):
+        # A Interface Trait foi cumprida e, além disso, configurou-se um Default!
+        se forca >= 5.0:
+            meu.destruir()
+
+barril_a = novo Barril(10.0)
+barril_b = novo Barril(11.0)
+
+# Defesa Python-Like: Evitando vazamentos globais. O Memory Layout do C é cirúrgico,
+# se um Objeto ganha instâncias dentro de array, outro não enxerga a mesma memória L1.
+barril_a.conteudo.append("Prata")
+
+afirmar(tamanho(barril_a.conteudo) == 2.0)
+afirmar(tamanho(barril_b.conteudo) == 1.0)
+
+# Testando Default Null Injector via Método da Classe L1
+barril_a.interagir() 
+afirmar(barril_a.estado == "Inteiro") # Força 1.0 < 5.0, intacto.
+
+barril_a.interagir(10.0)
+afirmar(barril_a.estado == "Explodido")
+
+# ====================================================================
+# 3. STATIC DISPATCH (SOBRESCREVENDO COMPILADOR PARA C-PUREZA)
+# Se passamos a Tipagem Exata de Base-Class no argumento, as otimizações
+# do Compilador anulam Override e convertem pra acesso de Ram ultra Rápido.
+# ====================================================================
+# O Tipo aqui foi fixado para "ObjetoMapa". 
+fn desintegrar_objeto(ObjetoMapa obj):
+    # Despacho Estático: Sem o gasto da Tabela-Virtual de heranças web-based.
+    obj.destruir() 
+
+desintegrar_objeto(barril_b)
+
+# 'barril_b' sendo Sub-classe "Barril" destruiria para "Explodido".
+# Mas a Tipagem de Alta Restrição L1 executou O(1) pra mãe, deixando como "Destruido".
+afirmar(barril_b.estado == "Destruido")
+
+
+# ====================================================================
+# 4. TRATAMENTO DE SHADOWING (DEIXE) E JUMPS (TENTAR/CAPTURAR)
+# A palavra 'deixe' protege variáveis em laços fechados e loops.
+# O Jumper C-Native manipula erros do ambiente L3 limpos de vazamento!
+# ====================================================================
+imposto = 100.0
+
+se verdadeiro:
+    # Shadowing perfeito: Usamos a flag let/deixe pra evitar quebrar a variável raiz
+    # apenas porque o nome temporário soa conveniente ao contexto iterativo.
+    deixe imposto = 5.0
+    afirmar(imposto == 5.0)
+
+# Ao finalizar, GC interno dizimou 'imposto = 5.0', preservando estado master L1!
+afirmar(imposto == 100.0)
+
+deixe config_dict = {"online": falso}
+deixe text_exc_stack = ""
+
+tentar:
+    # Operador Throw Nativo (Abortando para JMP Buf C do Compilador Base)
+    jogar "ErrorBlockMemAOT"
+    config_dict["online"] = verdadeiro # Jamais será atingida
+capturar sys_stack:
+    text_exc_stack = sys_stack
+
+afirmar(config_dict["online"] == falso)
+afirmar(text_exc_stack == "ErrorBlockMemAOT")

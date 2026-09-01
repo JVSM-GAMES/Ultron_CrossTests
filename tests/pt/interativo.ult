@@ -1,0 +1,11 @@
+nome = entrada(">>> Qual o seu nome? ")
+
+imprimir(f"\nSeu nome é {nome}")
+
+pausar("Pressione QUALQUER TECLA para limpar a tela...")
+limpar_tela()
+
+imprimir("💥 *BOOM!* Tela limpa!")
+pausar() 
+
+imprimir("\nObrigado por interagir!")
