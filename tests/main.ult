@@ -33,11 +33,17 @@ importar "pt/request.ult"
 testando("(PT-BR) Testando o Tempo")
 importar "pt/testar_tempo.ult"
 
-testando("(PT-BR) Testando Lógica Truthiness")
+testando("(PT-BR) Lógica Truthiness")
 importar "pt/logica_truthiness.ult"
 
 testando("(PT-BR) Classes")
 importar "pt/classes.ult"
+
+testando("(PT-BR) Switch e Memória")
+importar "pt/switch_e_memoria.ult"
+
+testando("(PT-BR) Corrida de Dados")
+importar "pt/corrida_de_dados.ult"
 
 print("---------------------------------------")
 print("Testing English")

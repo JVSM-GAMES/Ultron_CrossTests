@@ -1,3 +1,12 @@
+y = nulo
+
+funcao a(n):
+    c = 6 * n
+    retornar c
+
+x = a(y)
+imprimir(x)
+
 classe Inimigo:
     nome = "Goblin"
     vida = 100
@@ -55,9 +64,7 @@ senao se ping > 200:
 senao:
     imprimir("Iniciando modo Casual.")
 
-
-
-deixe status_rede = 200
+status_rede = 209
 
 escolha status_rede:
     caso 200:
@@ -68,3 +75,4 @@ escolha status_rede:
         imprimir("Erro na Matrix do Servidor!")
     padrao:
         imprimir("Código desconhecido.")
+

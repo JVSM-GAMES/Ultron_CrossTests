@@ -1,0 +1,7 @@
+classe ObjetoTeste:
+    id = 10.0
+    nome = "Item"
+
+obj = novo ObjetoTeste()
+imprimir(obj.id)
+imprimir(obj.nome)

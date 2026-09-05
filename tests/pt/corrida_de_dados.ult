@@ -1,0 +1,62 @@
+// 1. Dicionário Boxed (UVar) - Gerenciado pelo DOD
+estado_global = {
+    "transacoes_processadas": 0,
+    "blocos_minerados": 0
+}
+
+// 2. Variável Estrita - Fura o UVar e vai direto para o Silício C11 (Atômica)
+int transacao_atomica = 0 
+int hashrate_atomico = 0 
+
+// --- MODO SEGURO (Auto-Lock via AST) ---
+funcao processar_transacao_segura(estado) {
+    // O compilador detectou mutação em escopo compartilhado!
+    // INJEÇÃO INVISÍVEL AOT: travar(estado)
+    estado.transacoes_processadas = estado.transacoes_processadas + 1
+    // INJEÇÃO INVISÍVEL AOT: destravar(estado)
+
+     // Variável estrita bypassando a RAM via Instrução Atômica de CPU
+    transacao_atomica++
+}
+
+// --- MODO AVANÇADO (C-Like / Lock-Free) ---
+funcao minerar_bloco_unsafe(estado) {
+    // A flag .avancado() desativou o Auto-Lock. O usuário tem controle total.
+    travar(estado)
+    estado.blocos_minerados = estado.blocos_minerados + 1
+    destravar(estado)
+
+    travar(transacao_atomica)
+    transacao_atomica = transacao_atomica + 5
+    destravar(transacao_atomica)
+    
+    // Variável estrita bypassando a RAM via Instrução Atômica de CPU
+    hashrate_atomico++
+}
+
+imprimir("Iniciando Node Krystalis (Teste de Concorrência M:N)...")
+
+// Dispara 50 Fibras Seguras no Tachyon_Threads
+para i em range(50) {
+    tarefa(processar_transacao_segura, estado_global)
+}
+
+// Dispara 50 Fibras Unsafe. O usuário desliga as rodinhas de segurança.
+para i em range(50) {
+    tarefa(minerar_bloco_unsafe, estado_global).avancado({"segura": "false"})
+}
+
+// Cede a thread principal para o Reactor MPSC processar as tarefas
+dormir(1000)
+
+imprimir(f"Transacoes processadas (Auto-Lock): {estado_global.transacoes_processadas}")
+imprimir(f"Blocos minerados (Manual Lock): {estado_global.blocos_minerados}")
+imprimir(f"Hashrate em Hardware (Atomic C11): {hashrate_atomico}")
+imprimir(f"Transacoes em Hardware (Atomic C11): {transacao_atomica}")
+#imprimir(f"Transacoes processadas (Auto-Lock): ", estado_global.transacoes_processadas)
+#imprimir("Blocos minerados (Manual Lock): ", estado_global.blocos_minerados)
+#imprimir("Hashrate em Hardware (Atomic C11): ", hashrate_atomico)
+
+#afirmar(estado_global.transacoes_processadas == 50)
+#afirmar(estado_global.blocos_minerados == 50)
+#afirmar(hashrate_atomico == 50)

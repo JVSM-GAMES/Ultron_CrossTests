@@ -2,20 +2,28 @@
 # 🛡️ THE LIVENESS ENGINE & SWITCH CASE REABSORTION
 # =========================================================================
 
-funcao teste_switch_liveness(codigo,nome="Ultron_Engine"):
-    #nome = "Ultron_Engine"
-    
+funcao teste_switch_liveness(codigo, nome="Ultron_Engine", status = "pronto"):
+    dam = 1
     escolha codigo:
         caso 1:
-            imprimir("❌ Falhou 1")
-        caso 2:
-            imprimir("[PASS] Switch Case O(1) Funcionando Perfeitamente!")
             afirmar(nome == "Ultron_Engine")
+            afirmar(status == "pausado")
+        caso 2:
+            afirmar(nome == "Ultron_Engine")
+            afirmar(status == "pronto")
+        caso 5:
+            afirmar(nome == "Hello World")
+            se nome == "Hello World":
+                afirmar(status == "pronto")
         padrao:
-            imprimir("❌ Falhou Padrao")
-
-imprimir("🌟 Iniciando Teste de Memória e Controle de Fluxo...")
-teste_switch_liveness(1)
+            dam = codigo
+/*
+    se codigo nao 3:
+        afirmar(dam == 1)
+    senao:
+        afirmar(dam == codigo)
+*/
+teste_switch_liveness(1, nulo, "pausado")
 teste_switch_liveness(2)
 teste_switch_liveness(3)
-imprimir("✅ Fim! (Sem Leaks de Memória)")
+teste_switch_liveness(5, "Hello World")

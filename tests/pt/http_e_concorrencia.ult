@@ -4,7 +4,7 @@
 
 funcao banco_ficticio_mock(req_recebida):
     atrasar(100) # Simula esforço
-    retornar "{ \"mensagem\": \"Operacao processada por Ator!\" }"
+        retornar "{ \"mensagem\": \"Operacao processada por Ator!\" }" 
 
 asyncc = false
 funcao banco_ficticio_lento_mock(req_recebida):
@@ -20,7 +20,7 @@ funcao startar_api_backend(vazio):
 
 funcao colisor_instavel(vazio):
     atrasar(250)
-    forcar_crash()
+    #forcar_crash()
 
 imprimir("🌟 Iniciando Validações Extremas (Let It Crash, Background MPSC & TCP)...")
 
