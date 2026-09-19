@@ -34,29 +34,20 @@ funcao minerar_bloco_unsafe(estado) {
     hashrate_atomico++
 }
 
-imprimir("Iniciando Node Krystalis (Teste de Concorrência M:N)...")
-
-// Dispara 50 Fibras Seguras no Tachyon_Threads
-para i em range(50) {
+// Dispara 150 Fibras Seguras no Tachyon_Threads
+para i em range(150) {
     tarefa(processar_transacao_segura, estado_global)
 }
 
-// Dispara 50 Fibras Unsafe. O usuário desliga as rodinhas de segurança.
-para i em range(50) {
+// Dispara 150 Fibras Unsafe. O usuário desliga as rodinhas de segurança.
+para i em range(150) {
     tarefa(minerar_bloco_unsafe, estado_global).avancado({"segura": "false"})
 }
 
 // Cede a thread principal para o Reactor MPSC processar as tarefas
-dormir(1000)
+dormir(2500)
 
-imprimir(f"Transacoes processadas (Auto-Lock): {estado_global.transacoes_processadas}")
-imprimir(f"Blocos minerados (Manual Lock): {estado_global.blocos_minerados}")
-imprimir(f"Hashrate em Hardware (Atomic C11): {hashrate_atomico}")
-imprimir(f"Transacoes em Hardware (Atomic C11): {transacao_atomica}")
-#imprimir(f"Transacoes processadas (Auto-Lock): ", estado_global.transacoes_processadas)
-#imprimir("Blocos minerados (Manual Lock): ", estado_global.blocos_minerados)
-#imprimir("Hashrate em Hardware (Atomic C11): ", hashrate_atomico)
-
-#afirmar(estado_global.transacoes_processadas == 50)
-#afirmar(estado_global.blocos_minerados == 50)
-#afirmar(hashrate_atomico == 50)
+afirmar(estado_global.transacoes_processadas = 150)
+afirmar(estado_global.blocos_minerados = 150)
+afirmar(hashrate_atomico = 150)
+afirmar(transacao_atomica = 900)
