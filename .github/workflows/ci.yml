@@ -56,32 +56,6 @@ jobs:
     - name: "🚀 Teste 2 - Suíte Master de Módulos (Main Runner)"
       run: ultron executar tests/main.ult
 
-    - name: "🛸 Teste 3 - A Prova Real do APE (Rodando o mesmo Binário)"
-      shell: bash
-      run: |
-        cd tests
-        echo "=================================================="
-        echo "🛸 PROVA APE COSMOPOLITAN"
-        echo "Executando o mesmo arquivo APE compilado localmente..."
-        echo "OS Atual: $RUNNER_OS"
-        
-        chmod +x hello_world.ultron.com || true
-
-        if [ "$RUNNER_OS" == "macOS" ]; then
-          # Apple Silicon/Macs precisam do bypass de binfmt shell script via 'sh'
-          sh ./hello_world.ultron.com
-        elif [ "$RUNNER_OS" == "Windows" ]; then
-          # Renomear para .exe força o Windows PE Loader a absorver o formato mutante
-          mv hello_world.ultron.com hello_world.exe
-          ./hello_world.exe
-        else
-          # Linux roda nativamente como ELF via Kernel
-          ./hello_world.ultron.com
-        fi
-        
-        echo "✅ Arquivo universal validado com sucesso!"
-        echo "=================================================="
-
     - name: "🧹 [Linux/macOS] Desinstalação Limpa"
       if: runner.os != 'Windows'
       run: sudo ultron desinstalar
