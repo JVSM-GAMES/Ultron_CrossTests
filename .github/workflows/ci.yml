@@ -13,7 +13,7 @@ jobs:
           - os: ubuntu-latest
             target: x86_64-linux
             bin: ultron
-          - os: macos-14
+          - os: macos-15
             target: aarch64-macos
             bin: ultron
           - os: windows-latest
